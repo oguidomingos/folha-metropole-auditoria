@@ -1,0 +1,1517 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Folha Metrópole — Arquitetura da automação de notícias</title><style>:root{--ink:#14110d;--bg:#faf8f4;--muted:#6b6459;--accent:#b0834b;--line:#e4ddd0;--card:#fff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.7 Georgia,'Iowan Old Style',serif}
+.wrap{max-width:860px;margin:0 auto;padding:48px 22px 96px}
+header.top{border-bottom:3px solid var(--accent);padding-bottom:18px;margin-bottom:28px}
+.brand{font:600 12px/1 system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+h1{font:700 2rem/1.2 system-ui,sans-serif;margin:.5em 0 0}
+h2,h3,h4{font-family:system-ui,sans-serif;line-height:1.25;margin:2em 0 .6em}
+h2{font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.3em}h3{font-size:1.2rem;color:var(--accent)}
+nav#TOC{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 22px;margin:0 0 32px;font:15px/1.5 system-ui,sans-serif}
+nav#TOC:before{content:"Índice";font-weight:700;display:block;margin-bottom:6px}
+nav#TOC ul{margin:0;padding-left:18px;list-style:none}nav#TOC>ul{padding-left:0}nav#TOC a{color:var(--ink);text-decoration:none}nav#TOC a:hover{color:var(--accent)}
+blockquote{margin:1.2em 0;padding:.6em 1.2em;border-left:4px solid var(--accent);background:#f3ede2;border-radius:0 8px 8px 0}
+.tw{overflow-x:auto;margin:1.2em 0;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font:15px/1.5 system-ui,sans-serif}
+th{background:var(--ink);color:#fff;text-align:left}th,td{padding:9px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:nth-child(even) td{background:#fbf9f5}
+code{font:.88em ui-monospace,monospace;background:#efe9dc;padding:.1em .35em;border-radius:4px}
+pre{background:var(--ink);color:#f3ede2;padding:16px;border-radius:10px;overflow-x:auto;font-size:14px;line-height:1.5}pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:2em 0}a{color:#8a5f2a}
+footer{margin-top:56px;color:var(--muted);font:13px system-ui,sans-serif;border-top:1px solid var(--line);padding-top:14px}
+@media(max-width:600px){body{font-size:16px}h1{font-size:1.55rem}.wrap{padding:28px 16px}}
+@media print{nav#TOC{display:none}body{background:#fff}}
+.wrap{max-width:980px}
+pre.mermaid{background:#fff;color:#14110d;border:1px solid var(--line);padding:16px;overflow-x:auto;text-align:center}
+.tw table{min-width:560px}
+nav#TOC ul ul{padding-left:18px}
+</style></head><body><div class="wrap"><header class="top"><div class="brand">Expoente · Marketing</div><h1>Folha Metrópole — Arquitetura da automação de notícias</h1><p style="margin:.4em 0 0;color:var(--muted);font:14px system-ui,sans-serif">Nível 1 · texto: blog, post e push · com exemplo real ponta a ponta</p></header>
+<nav id="TOC"><ul>
+<li><a href="#1-diagrama-de-fluxo" id="toc-1-diagrama-de-fluxo">1.
+Diagrama de fluxo</a></li>
+<li><a href="#2-etapa-por-etapa" id="toc-2-etapa-por-etapa">2. Etapa por
+etapa</a></li>
+<li><a href="#3-rastreabilidade-e-ética-editorial"
+id="toc-3-rastreabilidade-e-ética-editorial">3. Rastreabilidade e ética
+editorial</a></li>
+<li><a href="#4-exemplo-end-to-end-com-uma-notícia-real"
+id="toc-4-exemplo-end-to-end-com-uma-notícia-real">4. Exemplo end-to-end
+com uma notícia real</a></li>
+<li><a href="#5-stack-proposta-alternativas-e-custo"
+id="toc-5-stack-proposta-alternativas-e-custo">5. Stack proposta,
+alternativas e custo</a></li>
+<li><a href="#6-roadmap" id="toc-6-roadmap">6. Roadmap</a></li>
+<li><a href="#7-decisões-que-precisam-do-charles"
+id="toc-7-decisões-que-precisam-do-charles">7. Decisões que precisam do
+Charles</a></li>
+<li><a href="#apêndice--viabilidade-dos-43-veículos-testada-ao-vivo"
+id="toc-apêndice--viabilidade-dos-43-veículos-testada-ao-vivo">Apêndice
+— Viabilidade dos 43 veículos (testada ao vivo)</a></li>
+</ul></nav>
+<p><strong>Cliente:</strong> Charles Lidberg ·
+<strong>Assessoria:</strong> Expoente · <strong>Data:</strong>
+19/10/2026 <strong>Escopo:</strong> pegar uma notícia de um veículo de
+referência e transformá-la em <strong>blog + post + push</strong>, com
+revisão humana. Vídeo é Nível 2 e está fora, só com o ponto de engate
+marcado.</p>
+<blockquote>
+<p><strong>Como ler este documento.</strong> Ele complementa a auditoria
+já entregue (<code>Auditoria e Pipeline de Notícias</code>) e não a
+repete. Aquela auditoria listava fontes oficiais (Agência Brasil,
+Senado, IBGE...). Agora a entrada real do pipeline são os <strong>43
+veículos de referência</strong> que o próprio Charles definiu, e isso
+muda duas coisas: a ética de uso (seção 3) e o tratamento de paywall e
+de veículos com linha editorial declarada (etapas 2, 5 e 6).</p>
+<p><strong>O que é medido e o que é ilustrativo.</strong> O exemplo da
+seção 4 usa uma notícia real de hoje, a extração rodou de verdade, o
+agrupamento usa itens reais de feeds consultados hoje e a medição de
+similaridade foi calculada. O sistema completo ainda não existe:
+placares de relevância, ids e logs do sistema aparecem marcados como
+<strong>ilustrativos</strong> (têm o formato real, mas não saíram de uma
+máquina em produção).</p>
+</blockquote>
+<hr />
+<h2 id="1-diagrama-de-fluxo">1. Diagrama de fluxo</h2>
+<pre class="mermaid">flowchart TD
+  subgraph FONTES[&quot;1 · Fontes&quot;]
+    A[&quot;43 veículos de referência&lt;br/&gt;RSS · sitemap · páginas&quot;]
+  end
+  A --&gt; B[&quot;2 · Ingestão&lt;br/&gt;coleta a cada 10-15 min&quot;]
+  B --&gt; C{&quot;3 · Deduplicação&lt;br/&gt;URL · título · significado&quot;}
+  C --&gt;|&quot;já visto&quot;| C1[&quot;Descarta e registra&quot;]
+  C --&gt;|&quot;mesmo fato, outro veículo&quot;| C2[&quot;Junta ao grupo do evento&quot;]
+  C --&gt;|&quot;novo&quot;| D
+  C2 --&gt; D{&quot;4 · Filtro de relevância editorial&lt;br/&gt;editoria · risco · utilidade&quot;}
+  D --&gt;|&quot;baixa relevância&quot;| D1[&quot;Arquiva&quot;]
+  D --&gt;|&quot;relevante&quot;| E[&quot;5 · Extração do conteúdo&lt;br/&gt;texto limpo + fatos estruturados&quot;]
+  E --&gt;|&quot;paywall ou texto falhou&quot;| E1[&quot;Mantém só título e link&lt;br/&gt;vira pauta para humano&quot;]
+  E --&gt; G{&quot;6 · Checagem e atribuição&lt;br/&gt;fatos x fontes · perfil do veículo&quot;}
+  G --&gt;|&quot;fato não confirmado&lt;br/&gt;ou só veículo opinativo&quot;| G1[&quot;Quarentena&lt;br/&gt;editor decide&quot;]
+  G --&gt;|&quot;confirmado&quot;| H[&quot;7 · Reescrita editorial com IA&lt;br/&gt;a partir dos fatos, não do texto&quot;]
+  H --&gt; H2{&quot;Verificação automática&lt;br/&gt;números · nomes · cópia&quot;}
+  H2 --&gt;|&quot;reprovado (até 2 tentativas)&quot;| H
+  H2 --&gt;|&quot;aprovado&quot;| I{&quot;8 · Revisão humana&lt;br/&gt;human-in-the-loop&quot;}
+  H2 --&gt;|&quot;reprovado 2x&quot;| G1
+  I --&gt;|&quot;rejeitar&quot;| I1[&quot;Arquiva com motivo&quot;]
+  I --&gt;|&quot;editar&quot;| H
+  I --&gt;|&quot;aprovar&quot;| J[&quot;9 · Formatação por canal&lt;br/&gt;modelos do design.md&quot;]
+  J --&gt; K1[&quot;10a · Blog&lt;br/&gt;WordPress&quot;]
+  J --&gt; K2[&quot;10b · Post&lt;br/&gt;Instagram · Facebook · X&quot;]
+  J --&gt; K3[&quot;10c · Push&lt;br/&gt;notificação&quot;]
+  K1 --&gt; M[&quot;11 · Métricas&lt;br/&gt;e aprendizado&quot;]
+  K2 --&gt; M
+  K3 --&gt; M
+  M -.-&gt;|&quot;ajusta pesos do filtro&quot;| D
+  I -.-&gt;|&quot;NÍVEL 2 · gancho futuro&quot;| V[[&quot;Vídeo / Reels&lt;br/&gt;fora deste escopo&quot;]]
+
+  classDef humano fill:#ff9900,stroke:#00334d,color:#00334d,stroke-width:2px;
+  classDef futuro fill:#eee,stroke:#999,color:#666,stroke-dasharray:5 4;
+  class I,G1,E1 humano;
+  class V futuro;</pre>
+<p><strong>Legenda:</strong> caixas laranja = onde um humano entra ou
+decide. Caixa tracejada = Nível 2, não faz parte desta entrega. Toda
+seta de "descartar", "arquivar" e "quarentena" grava um motivo, nada
+some sem registro.</p>
+<hr />
+<h2 id="2-etapa-por-etapa">2. Etapa por etapa</h2>
+<p>Cada etapa segue o mesmo roteiro: <strong>o que é · por que existe ·
+tecnologia · se falhar · onde entra humano.</strong></p>
+<h3 id="etapa-1--fontes-os-43-veículos-de-referência">Etapa 1 — Fontes
+(os 43 veículos de referência)</h3>
+<ul>
+<li><strong>O que é.</strong> A lista que o Charles definiu: 24 do
+Brasil, 9 dos EUA e 10 da Europa. É a "banca de jornais" que o sistema
+lê todo dia.</li>
+<li><strong>Por que existe.</strong> Dá ao sistema o mesmo repertório
+que a redação já usa e garante que a pauta nasce do que a Folha
+Metrópole considera referência.</li>
+<li><strong>Tecnologia.</strong> Para cada veículo, o melhor canal
+disponível, nesta ordem: feed RSS, sitemap de notícias, página de seção.
+Ver o teste real de viabilidade no <a
+href="#apêndice--viabilidade-dos-43-veículos-testada-ao-vivo">Apêndice</a>.</li>
+<li><strong>Se falhar.</strong> Se um feed muda de endereço ou cai, o
+sistema alerta no Telegram depois de 24 h sem item novo daquele veículo.
+Os demais seguem funcionando.</li>
+<li><strong>Humano.</strong> Uma vez, na implantação: ratificar o
+<strong>perfil de cada veículo</strong> (A, B ou C, explicado na etapa
+6). Depois disso, revisão trimestral.</li>
+</ul>
+<h3 id="etapa-2--ingestão">Etapa 2 — Ingestão</h3>
+<ul>
+<li><strong>O que é.</strong> O "carteiro": busca os itens novos de cada
+fonte e guarda título, resumo, link, data e autor.</li>
+<li><strong>Por que existe.</strong> Sem coleta contínua não há matéria
+"do dia". Guardar o bruto também permite auditar depois de onde veio
+cada informação.</li>
+<li><strong>Tecnologia.</strong> <code>feedparser</code> (RSS) e
+<code>httpx</code>, com <code>ETag/Last-Modified</code> para só baixar o
+que mudou. Identifica-se com User-Agent próprio, respeita
+<code>robots.txt</code> e limita a velocidade por domínio. Guarda tudo
+em Postgres. O texto completo só é buscado na etapa 5, e só para o que
+passar do filtro.</li>
+<li><strong>Se falhar.</strong> Falha de rede: nova tentativa com espera
+crescente. Bloqueio do veículo (HTTP 403/402): a fonte entra em
+"pausada" e o sistema <strong>não tenta contornar</strong> a barreira,
+esse é um princípio do projeto.</li>
+<li><strong>Humano.</strong> Nenhum no dia a dia. Só recebe o alerta de
+fonte parada.</li>
+</ul>
+<h3 id="etapa-3--deduplicação">Etapa 3 — Deduplicação</h3>
+<ul>
+<li><strong>O que é.</strong> Descobrir que vários itens falam do mesmo
+fato e tratá-los como um só <strong>evento</strong>.</li>
+<li><strong>Por que existe.</strong> Num dia, a mesma notícia chega por
+5 veículos. Sem isso o jornal publicaria 5 textos iguais. E há um ganho
+extra: um evento coberto por vários veículos vira <strong>um</strong>
+texto, escrito a partir de <strong>várias</strong> fontes, o que reduz o
+risco de cópia e melhora a checagem.</li>
+<li><strong>Tecnologia.</strong> Três camadas: (1) URL canônica sem
+parâmetros de rastreio; (2) título normalizado; (3) <strong>similaridade
+de significado</strong> por embeddings (vetores numéricos do texto,
+comparados no <code>pgvector</code>), com limiar inicial de 0,88 na
+janela das últimas 72 h. O limiar é calibrado nas duas primeiras semanas
+com dados reais.</li>
+<li><strong>Se falhar.</strong> Falso positivo (juntar fatos diferentes)
+é pego na revisão, que mostra todos os itens do grupo. Falso negativo
+(não juntar) gera duas pautas parecidas; a segunda é descartada pelo
+editor, ou pelo aviso "evento já publicado".</li>
+<li><strong>Humano.</strong> Só na calibração inicial e quando o editor
+corrige um agrupamento.</li>
+</ul>
+<h3 id="etapa-4--filtro-de-relevância-editorial">Etapa 4 — Filtro de
+relevância editorial</h3>
+<ul>
+<li><strong>O que é.</strong> O "pauteiro" automático: dá uma nota ao
+evento e decide se vale virar matéria.</li>
+<li><strong>Por que existe.</strong> Dos ~1.400 itens que os feeds
+testados entregaram numa única coleta, só uma fração interessa a um
+jornal com a linha da Folha Metrópole. Publicar tudo seria ruído;
+publicar pouco seria desperdício.</li>
+<li><strong>Tecnologia.</strong> Um modelo de linguagem pequeno e barato
+lê título e resumo e responde em formato fixo (JSON): editoria,
+aderência ao perfil do jornal, urgência, utilidade pública, e
+<strong>marcadores de risco</strong> (crime, menor de idade, saúde,
+eleição, citação a empresas do Charles). As regras da casa ficam em
+lista configurável, não escondidas no prompt.</li>
+<li><strong>Se falhar.</strong> Nota errada para cima: um item fraco
+chega à revisão e o editor rejeita (custo: segundos). Nota errada para
+baixo: uma boa pauta fica arquivada; por isso o arquivo é pesquisável e
+a etapa 11 mede esse caso.</li>
+<li><strong>Humano.</strong> <strong>Define as regras</strong> (quais
+editorias priorizar, o que é "risco") e pode puxar manualmente qualquer
+item arquivado para a fila.</li>
+</ul>
+<h3 id="etapa-5--extração-do-conteúdo">Etapa 5 — Extração do
+conteúdo</h3>
+<ul>
+<li><strong>O que é.</strong> Abrir a página da matéria e separar o que
+é <strong>texto jornalístico</strong> do que é menu, anúncio e rodapé.
+Depois, transformar o texto em <strong>fatos estruturados</strong>:
+quem, o quê, quando, onde, números, declarações com autor.</li>
+<li><strong>Por que existe.</strong> A reescrita parte dos
+<strong>fatos</strong>, não do texto original. Essa separação é a
+principal barreira técnica contra cópia: o redator de IA nunca "vê"
+frases para parafrasear, vê uma lista de afirmações.</li>
+<li><strong>Tecnologia.</strong> <code>trafilatura</code> (extração de
+texto limpo; já testada no exemplo da seção 4) e um modelo de linguagem
+para produzir a lista de afirmações, cada uma ligada ao parágrafo e à
+URL de origem.</li>
+<li><strong>Se falhar.</strong> Paywall (WSJ, FT, Bloomberg, Economist,
+Valor e outros) ou página que bloqueia robô: o sistema <strong>não
+burla</strong>. Fica só com título, resumo público e link, e o item vira
+<strong>pauta para humano</strong>, que pode apurar por outra fonte ou
+pela fonte primária.</li>
+<li><strong>Humano.</strong> Só no caso de paywall/falha, para decidir
+se a pauta merece apuração própria.</li>
+</ul>
+<h3 id="etapa-6--checagem-e-atribuição-de-fonte">Etapa 6 — Checagem e
+atribuição de fonte</h3>
+<ul>
+<li><strong>O que é.</strong> Antes de escrever, o sistema responde:
+"isso é confiável o bastante para publicar, e de quem é a
+informação?".</li>
+<li><strong>Por que existe.</strong> É o ponto em que uma notícia errada
+ou um boato de um único veículo seria barrado. E é aqui que se define
+<strong>a quem o texto atribui cada afirmação</strong>.</li>
+<li><strong>Tecnologia.</strong> Regras por <strong>perfil de
+veículo</strong> (proposta; o Charles ratifica):
+<ul>
+<li><strong>A, agência/dado primário</strong> (AP, Reuters, Bloomberg,
+dados oficiais): fato pode ser publicado com atribuição.</li>
+<li><strong>B, jornalismo generalista ou econômico de
+referência</strong>: fato publicável com atribuição; números relevantes
+pedem confirmação em segundo veículo <strong>ou</strong> fonte
+primária.</li>
+<li><strong>C, veículo com linha editorial declarada</strong>: serve
+como <strong>pauta</strong> e como <strong>posição atribuída</strong>
+("segundo a Revista X"); um fato que só apareça em veículos C
+<strong>não</strong> é publicado como fato, vai para quarentena até
+haver confirmação em A ou B. Além disso: busca da fonte primária (órgão,
+comunicado, base de dados) e checagem cruzada de números entre os itens
+do evento.</li>
+</ul></li>
+<li><strong>Se falhar.</strong> Sem confirmação suficiente:
+<strong>quarentena</strong>, o item vai ao editor com o motivo escrito
+("número só aparece em um veículo").</li>
+<li><strong>Humano.</strong> O editor decide em quarentena. Política e
+Justiça passam por humano em qualquer caso.</li>
+</ul>
+<h3 id="etapa-7--reescrita-editorial-com-ia">Etapa 7 — Reescrita
+editorial com IA</h3>
+<ul>
+<li><strong>O que é.</strong> O modelo escreve a matéria no padrão da
+Folha Metrópole (título declarativo de 80–110 caracteres, linha fina,
+lide, intertítulos, tom neutro) <strong>a partir da lista de
+fatos</strong>, com a atribuição já embutida no texto.</li>
+<li><strong>Por que existe.</strong> É o ganho de produtividade do
+projeto. Mas só serve se o texto sair original, correto e na voz do
+jornal.</li>
+<li><strong>Tecnologia.</strong> Um modelo de linguagem de alta
+capacidade, com as regras de voz do <a
+href="design.html"><code>design.md</code></a> como instrução e 5 a 8
+matérias reais do jornal como exemplo de estilo. Saída em formato fixo:
+título, linha fina, corpo, slug, tags, meta description, sugestão de
+imagem, bloco de fonte. Em seguida, <strong>verificação
+automática</strong>:
+<ol type="1">
+<li>cada número, nome e data do texto é conferido contra a lista de
+fatos;</li>
+<li><strong>teste de cópia</strong>: sobreposição de sequências de 8
+palavras contra a fonte (traduzida para o português quando a fonte é
+estrangeira) e semelhança de significado por parágrafo; limiar proposto
+≤ 3% em 8-gramas, e nenhuma sequência literal acima de 12 palavras,
+exceto nomes, cargos e termos de dado;</li>
+<li>filtros de segurança editorial: sem acusação sem atribuição,
+presunção de inocência, sem nome de menor, sem recomendação médica.</li>
+</ol></li>
+<li><strong>Se falhar.</strong> Reprovou na verificação: reescreve com a
+falha apontada, até 2 vezes. Reprovou duas vezes: vai à quarentena. O
+sistema nunca publica texto que não passou na verificação.</li>
+<li><strong>Humano.</strong> Nenhum nesta etapa; o humano entra logo
+depois.</li>
+</ul>
+<h3 id="etapa-8--revisão-humana-human-in-the-loop">Etapa 8 — Revisão
+humana (human-in-the-loop)</h3>
+<ul>
+<li><strong>O que é.</strong> Um editor vê o rascunho ao lado da fonte,
+com cada afirmação ligada ao seu trecho de origem, o relatório de cópia
+e as artes prontas. Decide: <strong>aprovar, editar ou
+rejeitar</strong>.</li>
+<li><strong>Por que existe.</strong> Responsabilidade editorial é de
+pessoas. A IA acelera, mas quem assina é a redação.</li>
+<li><strong>Tecnologia.</strong> Fila de revisão simples (no começo,
+mensagem no Telegram com botões Aprovar / Editar / Rejeitar e link de
+pré-visualização no WordPress; depois, um painel). Cada decisão grava
+revisor, hora e comentário.</li>
+<li><strong>Se falhar.</strong> Se ninguém revisar no prazo,
+<strong>nada é publicado</strong>: o item espera. Para plantão, a regra
+de tempo é configurável, mas a aprovação continua obrigatória.</li>
+<li><strong>Humano.</strong> <strong>Sempre.</strong> Nas primeiras 4
+semanas, 100% das matérias. Depois, só editorias de baixo risco com dado
+oficial e verificação limpa podem ser publicadas direto, e
+<strong>Polícia, Justiça, Saúde, Política e qualquer menção às empresas
+do Charles continuam sempre com humano.</strong> Esta é a única etapa
+que dispara a publicação.</li>
+</ul>
+<h3 id="etapa-9--formatação-por-canal">Etapa 9 — Formatação por
+canal</h3>
+<ul>
+<li><strong>O que é.</strong> Transformar a matéria aprovada nos
+formatos de cada destino: corpo do blog, legenda do Instagram, texto do
+X, texto do Facebook, notificação push.</li>
+<li><strong>Por que existe.</strong> Cada canal tem limite de tamanho e
+linguagem própria. Um texto único mal cortado gera manchete truncada e
+link quebrado.</li>
+<li><strong>Tecnologia.</strong> Modelos de formatação do <a
+href="design.html"><code>design.md</code></a>, aplicados por código
+(limites de caracteres validados antes de publicar) e pelo modelo de
+linguagem só para o encurtamento. Nenhum canal ganha informação que o
+blog não tenha.</li>
+<li><strong>Se falhar.</strong> Texto estourou o limite: o validador
+devolve para encurtar; nunca corta no meio da frase.</li>
+<li><strong>Humano.</strong> Já aprovou o conteúdo na etapa 8; vê as
+versões por canal na mesma tela e pode ajustar.</li>
+</ul>
+<h3 id="etapa-10--publicação-blog--post--push">Etapa 10 — Publicação
+(blog + post + push)</h3>
+<ul>
+<li><strong>O que é.</strong> Colocar no ar: matéria no WordPress, post
+nas redes, notificação push.</li>
+<li><strong>Por que existe.</strong> É o fim visível do processo, e deve
+ser repetível e rastreável.</li>
+<li><strong>Tecnologia.</strong> WordPress via REST API com Application
+Password (rascunho ou agendado), Rank Math preenchido, slot do banner
+afiliado preservado. Redes via APIs oficiais (Instagram Graph API;
+Facebook Pages). Push via a ferramenta que o site já usa. Cada
+publicação guarda o id externo.</li>
+<li><strong>Se falhar.</strong> O WordPress hoje está atrás de
+Cloudflare e bloqueia chamadas externas: <strong>sem liberação do IP da
+VPS pelo Gooweb a publicação automática não sai</strong> (plano B:
+pacote pronto para colar). Falha de uma rede não derruba as outras; o
+sistema tenta de novo e avisa.</li>
+<li><strong>Humano.</strong> Pode agendar horário; o push segue a regra
+de horário e urgência do <code>design.md</code>.</li>
+</ul>
+<h3 id="etapa-11--métricas-e-aprendizado">Etapa 11 — Métricas e
+aprendizado</h3>
+<ul>
+<li><strong>O que é.</strong> Medir o que funcionou: leituras, cliques,
+tempo no texto, alcance e engajamento por canal, e também
+<strong>qualidade do processo</strong>: quanto o editor alterou, quantas
+rejeições, quais fontes mais rendem.</li>
+<li><strong>Por que existe.</strong> Sem isso a automação publica por
+inércia. Com isso, o filtro de relevância (etapa 4) melhora com o
+uso.</li>
+<li><strong>Tecnologia.</strong> Google Analytics 4 / Search Console
+para o blog, APIs das redes para os posts, e as próprias tabelas do
+sistema para o processo. Um painel semanal.</li>
+<li><strong>Se falhar.</strong> Sem métricas o sistema continua
+publicando, só deixa de aprender. Alerta se o painel ficar 48 h sem
+dado.</li>
+<li><strong>Humano.</strong> Revisa o relatório semanal e decide
+mudanças de linha (que editorias crescer, que fontes cortar).</li>
+</ul>
+<hr />
+<h2 id="3-rastreabilidade-e-ética-editorial">3. Rastreabilidade e ética
+editorial</h2>
+<p>Este é o ponto mais sensível do projeto, porque a entrada são
+<strong>veículos concorrentes e de referência</strong>, não órgãos
+públicos. A regra de ouro: <strong>o sistema reescreve fatos, nunca
+reproduz texto; e o veículo de origem é sempre creditado.</strong></p>
+<h3
+id="31-rastreabilidade-o-sistema-sempre-sabe-de-onde-veio-cada-frase">3.1
+Rastreabilidade: o sistema sempre sabe de onde veio cada frase</h3>
+<ul>
+<li>Cada matéria tem <strong>registro de origem</strong>: URL, veículo,
+autor, data e hora da coleta, e o hash do conteúdo coletado.</li>
+<li>Cada <strong>afirmação</strong> do texto final aponta para o trecho
+e a fonte de onde saiu (tabela <code>article_claims</code>). O editor vê
+isso na revisão.</li>
+<li>Guardamos o prompt, a versão do modelo e a versão das regras usadas.
+Se alguém questionar uma matéria daqui a 6 meses, dá para reconstruir o
+caminho inteiro.</li>
+<li><strong>Nada é publicado sem pelo menos um item de fonte
+ligado.</strong> Matéria sem origem registrada é bloqueada
+tecnicamente.</li>
+</ul>
+<h3 id="32-como-se-evita-plágio-e-cópia-literal">3.2 Como se evita
+plágio e cópia literal</h3>
+<ol type="1">
+<li><strong>Reescrita a partir de fatos, não de texto</strong> (etapas 5
+e 7): o redator de IA recebe afirmações soltas, não parágrafos do
+veículo.</li>
+<li><strong>Teste de cópia obrigatório</strong> antes da revisão (etapa
+7): sobreposição de 8 palavras, com fonte estrangeira comparada em
+tradução. Reprovou, não segue.</li>
+<li><strong>Citações curtas e entre aspas, sempre atribuídas.</strong>
+Declarações de entrevistados entram como citação identificada ("disse X,
+economista da Y"); trecho do próprio veículo, no máximo uma frase curta,
+entre aspas, quando for indispensável.</li>
+<li><strong>Um evento, várias fontes.</strong> Quando possível, o texto
+combina mais de um veículo, o que afasta a semelhança com qualquer
+um.</li>
+<li><strong>Análise e opinião de terceiros não são reescritas.</strong>
+Colunas, editoriais e reportagens exclusivas de investigação ficam fora
+da reescrita automática: viram pauta ou link com comentário da
+redação.</li>
+<li><strong>Imagens.</strong> Nunca reutilizar foto, gráfico ou vídeo de
+outro veículo. Capa e artes vêm de agência pública, banco licenciado,
+material próprio ou arte gerada pela redação (inclusive infográfico com
+os dados), e ilustração por IA fica sempre rotulada.</li>
+<li><strong>Paywall não é contornado</strong>, nem para ler (etapa
+5).</li>
+</ol>
+<h3 id="33-como-fica-o-crédito-ao-veículo-de-origem">3.3 Como fica o
+crédito ao veículo de origem</h3>
+<ul>
+<li><strong>No texto</strong>, a atribuição aparece onde a informação
+aparece: "segundo a BBC", "informou o Wall Street Journal".</li>
+<li><strong>No bloco de fonte</strong>, ao fim do blog: veículo, autor
+quando houver, data e <strong>link para a matéria original</strong>.
+Exemplo da seção 4.</li>
+<li><strong>Nos posts</strong>, uma linha "Fonte: BBC News" sempre
+presente, antes da chamada para o link.</li>
+<li><strong>Selo de IA.</strong> "Texto produzido com apoio de
+inteligência artificial e revisado pela redação." Já é prática do jornal
+citar a matéria original quando contextualiza material de terceiros, o
+pipeline apenas formaliza.</li>
+<li><strong>Correções.</strong> A editoria Errata já existe; o sistema
+liga cada correção à matéria e à afirmação alterada.</li>
+</ul>
+<h3 id="34-pontos-jurídicos-que-dependem-de-validação">3.4 Pontos
+jurídicos que dependem de validação</h3>
+<blockquote>
+<p>Não é parecer jurídico. São pontos que o Charles deve levar ao
+advogado do jornal <strong>antes</strong> de ligar o Nível 1 em
+produção.</p>
+</blockquote>
+<ol type="1">
+<li><strong>Fatos x forma.</strong> Em geral, o fato noticiado não é
+protegido por direito autoral, a <strong>forma de expressão</strong> é
+(Lei 9.610/98, art. 8º, e a distinção ideia/expressão). A reescrita
+factual atende a esse desenho; a cópia não.</li>
+<li><strong>Reprodução de notícia com menção da fonte.</strong> A mesma
+lei prevê exceção para reprodução, na imprensa, de notícia ou artigo
+informativo publicado em outro veículo, com menção do autor e da
+publicação (art. 46, I, "a"). Os limites dessa exceção, principalmente
+com uso comercial e com veículos estrangeiros, precisam de leitura
+jurídica.</li>
+<li><strong>Termos de uso de cada veículo.</strong> O próprio feed da
+BBC, por exemplo, traz no cabeçalho um aviso de copyright com link para
+termos específicos sobre uso de RSS e metadados. Cada um dos 43 tem
+termos próprios; agências como AP, Reuters e Bloomberg costumam exigir
+<strong>licença comercial</strong> para reproduzir conteúdo. O sistema
+deve ter, por veículo, uma marca "licença verificada / não
+verificada".</li>
+<li><strong>Paywall e extração automática.</strong> Mesmo quando
+tecnicamente possível, acessar conteúdo pago por robô pode violar
+termos. O projeto <strong>não</strong> faz isso.</li>
+<li><strong>Responsabilidade por erro.</strong> O jornal responde pelo
+que publica, mesmo que o erro venha da fonte. Por isso as etapas 6 e
+8.</li>
+<li><strong>Pesquisa e eleição.</strong> Brasil está em ciclo eleitoral
+(segundo turno em andamento): conteúdo político precisa de revisão
+humana reforçada e atenção às regras de propaganda e de pesquisa
+eleitoral.</li>
+</ol>
+<hr />
+<h2 id="4-exemplo-end-to-end-com-uma-notícia-real">4. Exemplo end-to-end
+com uma notícia real</h2>
+<h3 id="a-notícia-escolhida">A notícia escolhida</h3>
+<div class="tw"><table>
+<tbody>
+<tr class="odd">
+<td><strong>Veículo</strong></td>
+<td>BBC News (Reino Unido), um dos 10 veículos europeus da lista</td>
+</tr>
+<tr class="even">
+<td><strong>Título original</strong></td>
+<td><em>China's growth accelerates as AI boom helps boost
+exports</em></td>
+</tr>
+<tr class="odd">
+<td><strong>Autor</strong></td>
+<td>Osmond Chia</td>
+</tr>
+<tr class="even">
+<td><strong>Publicada</strong></td>
+<td>19/10/2026</td>
+</tr>
+<tr class="odd">
+<td><strong>Link</strong></td>
+<td><a
+href="https://www.bbc.co.uk/news/articles/cm5yn098xz8lo">https://www.bbc.co.uk/news/articles/cm5yn098xz8lo</a></td>
+</tr>
+<tr class="even">
+<td><strong>Por que esta</strong></td>
+<td>Economia/Mundo (editorias do jornal), tem números, atribuição clara
+de analistas, e foi publicada hoje; não envolve crime, menor, saúde nem
+candidato. A BBC é um perfil B (veículo de referência generalista).</td>
+</tr>
+</tbody>
+</table></div>
+<p>Reproduzimos aqui apenas o necessário (título, números e frases
+curtas) para demonstrar o processo. <strong>O texto integral da BBC não
+está neste documento</strong>, de propósito: é a mesma regra que o
+sistema vai seguir.</p>
+<h3 id="etapa-12--fonte-e-ingestão--real">Etapa 1–2 · Fonte e ingestão —
+<em>real</em></h3>
+<p>O feed <code>https://feeds.bbci.co.uk/news/business/rss.xml</code>
+foi consultado hoje e entregou o item. O sistema guardaria:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;source&quot;</span><span class="fu">:</span> <span class="st">&quot;BBC News&quot;</span><span class="fu">,</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;profile&quot;</span><span class="fu">:</span> <span class="st">&quot;B&quot;</span><span class="fu">,</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;url_canonical&quot;</span><span class="fu">:</span> <span class="st">&quot;https://www.bbc.co.uk/news/articles/cm5yn098xz8lo&quot;</span><span class="fu">,</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;title&quot;</span><span class="fu">:</span> <span class="st">&quot;China&#39;s growth accelerates as AI boom helps boost exports&quot;</span><span class="fu">,</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;published_at&quot;</span><span class="fu">:</span> <span class="st">&quot;2026-10-19&quot;</span><span class="fu">,</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;feed_summary&quot;</span><span class="fu">:</span> <span class="st">&quot;Exports have helped offset weak spending at home, but trade tensions and AI doubts cloud its outlook.&quot;</span><span class="fu">,</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;collected_at&quot;</span><span class="fu">:</span> <span class="st">&quot;2026-10-19T…&quot;</span><span class="fu">,</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;novo&quot;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="etapa-3--deduplicação--itens-reais-agrupamento-descrito">Etapa 3
+· Deduplicação — <em>itens reais, agrupamento descrito</em></h3>
+<p>Na mesma coleta, outro veículo da lista publicou o mesmo fato:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Veículo</th>
+<th>Título</th>
+<th>Uso no pipeline</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>BBC News</td>
+<td><em>China's growth accelerates as AI boom helps boost
+exports</em></td>
+<td>texto extraído (aberto)</td>
+</tr>
+<tr class="even">
+<td>The Wall Street Journal</td>
+<td><em>China's Economy Expanded 4.5% in Third Quarter, Powered by
+Exports</em></td>
+<td><strong>só título e link</strong> (paywall): serve para confirmar o
+número de 4,5%</td>
+</tr>
+</tbody>
+</table></div>
+<p>As duas manchetes descrevem o mesmo evento, são agrupadas em um único
+<strong>evento</strong> e geram <strong>uma</strong> matéria. Itens
+relacionados que <strong>não</strong> entram no grupo (outro fato):
+<em>Chinese Exports Soar in September</em> (WSJ) e <em>Another warning
+sign for China's economy: falling consumer credit</em> (The Economist).
+Ficam como sugestões de "leia também".</p>
+<h3
+id="etapa-4--relevância-editorial--saída-ilustrativa-formato-real">Etapa
+4 · Relevância editorial — <em>saída ilustrativa, formato real</em></h3>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;evento&quot;</span><span class="fu">:</span> <span class="st">&quot;pib-china-3t-2026&quot;</span><span class="fu">,</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;editoria&quot;</span><span class="fu">:</span> <span class="st">&quot;Economia&quot;</span><span class="fu">,</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;aderencia_perfil&quot;</span><span class="fu">:</span> <span class="fl">0.86</span><span class="fu">,</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;urgencia&quot;</span><span class="fu">:</span> <span class="st">&quot;media&quot;</span><span class="fu">,</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;utilidade_publica&quot;</span><span class="fu">:</span> <span class="st">&quot;media&quot;</span><span class="fu">,</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;riscos&quot;</span><span class="fu">:</span> <span class="ot">[]</span><span class="fu">,</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;citacao_empresa_charles&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;decisao&quot;</span><span class="fu">:</span> <span class="st">&quot;seguir&quot;</span><span class="fu">,</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;rota&quot;</span><span class="fu">:</span> <span class="st">&quot;revisao_humana_obrigatoria (fase inicial)&quot;</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>Uma sugestão que o sistema levanta e <strong>deixa à decisão do
+editor</strong>: um "ângulo Brasil" (a China é parceira comercial
+central do país). Ele só entra no texto se o editor confirmar com fonte
+brasileira.</p>
+<h3 id="etapa-5--extração--real-rodou">Etapa 5 · Extração — <em>real
+(rodou)</em></h3>
+<p>A extração com <code>trafilatura</code> devolveu título, autor, data
+e o texto limpo da página. A partir dele, o modelo produz a lista de
+afirmações; é ela, e não os parágrafos, que vai para o redator:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Afirmação (fato)</th>
+<th>Atribuição</th>
+<th>Tipo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>C1</td>
+<td>PIB da China cresceu 4,5% no 3º trimestre de 2026</td>
+<td>dados oficiais chineses, via BBC</td>
+<td>número</td>
+</tr>
+<tr class="even">
+<td>C2</td>
+<td>Resultado é maior que o do trimestre anterior (menor em 3 anos) e
+menor que os 5% de jan–mar</td>
+<td>BBC</td>
+<td>número</td>
+</tr>
+<tr class="odd">
+<td>C3</td>
+<td>Meta anual de Pequim: 4,5% a 5%; resultado no piso</td>
+<td>BBC</td>
+<td>número</td>
+</tr>
+<tr class="even">
+<td>C4</td>
+<td>Vendas de bens de alta tecnologia: +14,3%</td>
+<td>dados oficiais, via BBC</td>
+<td>número</td>
+</tr>
+<tr class="odd">
+<td>C5</td>
+<td>Produção de baterias e de robôs industriais: +29% ou mais</td>
+<td>dados oficiais, via BBC</td>
+<td>número</td>
+</tr>
+<tr class="even">
+<td>C6</td>
+<td>Investimento imobiliário: queda superior a 20% em 9 meses</td>
+<td>dados oficiais, via BBC</td>
+<td>número</td>
+</tr>
+<tr class="odd">
+<td>C7</td>
+<td>Superávit comercial caminha para superar o recorde de US$ 1,2 tri de
+2025</td>
+<td>BBC</td>
+<td>projeção</td>
+</tr>
+<tr class="even">
+<td>C8</td>
+<td>Sheana Yue (Oxford Economics): exportações de alta tecnologia
+seguram o crescimento; sem sinal de fim da crise imobiliária</td>
+<td>citação de analista</td>
+<td>declaração</td>
+</tr>
+<tr class="odd">
+<td>C9</td>
+<td>Dave Chia (Moody's Analytics): risco de depender de "único motor
+externo"; efeitos das medidas de apoio ainda não aparecem</td>
+<td>citação de analista</td>
+<td>declaração</td>
+</tr>
+<tr class="even">
+<td>C10</td>
+<td>Escritório Nacional de Estatísticas: economia "manteve
+desenvolvimento estável sob pressão"</td>
+<td>órgão oficial</td>
+<td>declaração</td>
+</tr>
+<tr class="odd">
+<td>C11</td>
+<td>Em setembro, Pequim anunciou juros menores para algumas empresas e
+subsídios a compradores de imóveis</td>
+<td>BBC</td>
+<td>fato</td>
+</tr>
+<tr class="even">
+<td>C12</td>
+<td>EUA e União Europeia reagem à entrada de produtos chineses
+baratos</td>
+<td>BBC</td>
+<td>fato</td>
+</tr>
+</tbody>
+</table></div>
+<h3
+id="etapa-6--checagem-e-atribuição--real-quanto-ao-cruzamento-parcial-quanto-à-fonte-primária">Etapa
+6 · Checagem e atribuição — <em>real quanto ao cruzamento, parcial
+quanto à fonte primária</em></h3>
+<ul>
+<li><strong>C1 (4,5%)</strong> aparece na BBC e no título do WSJ:
+<strong>confirmado por dois veículos</strong>.</li>
+<li><strong>Fonte primária:</strong> os dados vêm do Escritório Nacional
+de Estatísticas da China. A busca automática no site do órgão é uma
+tarefa do sistema; <strong>neste exemplo ela não foi executada</strong>,
+e por isso o texto atribui à fonte oficial "segundo dados oficiais" via
+BBC, e não afirma ter consultado o órgão.</li>
+<li>C6 e C7 vêm de um único veículo: o sistema marca e o editor decide
+se mantém atribuído à BBC (foi o que o rascunho fez).</li>
+<li>Resultado: <strong>segue</strong>, com atribuição à BBC.</li>
+</ul>
+<h3 id="etapa-7--reescrita-com-ia--rascunho-medida-real-de-cópia">Etapa
+7 · Reescrita com IA — rascunho, medida real de cópia</h3>
+<p>O rascunho completo está no item a) Blog, mais abaixo. Resultado do
+teste de cópia, <strong>calculado de verdade</strong> comparando o
+rascunho com uma tradução literal da matéria original para o
+português:</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Teste</th>
+<th>Resultado</th>
+<th>Limiar proposto</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sequências de 8 palavras iguais à fonte</td>
+<td><strong>0,5%</strong> (2 de 402)</td>
+<td>≤ 3%</td>
+</tr>
+<tr class="even">
+<td>Sequências de 6 palavras</td>
+<td>4,0% (16 de 404)</td>
+<td>só informativo</td>
+</tr>
+<tr class="odd">
+<td>As 2 coincidências de 8 palavras</td>
+<td>"a produção de baterias e de robôs industriais" e "superar o recorde
+de US$ 1,2 trilhão"</td>
+<td>termos de dado, permitidos</td>
+</tr>
+</tbody>
+</table></div>
+<p>Conferência de fatos do rascunho contra a lista C1–C12: <strong>todos
+os números e nomes conferem</strong>. Na primeira versão do rascunho, a
+verificação pegou dois problemas que foram corrigidos: a meta de 4,5%–5%
+não estava no corpo, e o pacote de medidas de setembro estava atribuído
+ao economista, quando na fonte ele é narração do repórter.</p>
+<h3 id="etapa-8--revisão-humana--descrição">Etapa 8 · Revisão humana —
+<em>descrição</em></h3>
+<p>O editor veria: matéria e fatos lado a lado, relatório de cópia
+(tabela acima), as artes, e os três botões. Pontos que mereceriam
+atenção neste caso: (1) manter ou não o "ângulo Brasil"; (2) a capa. A
+matéria é factual e de risco baixo, mas por ser fase inicial passaria
+por aprovação humana.</p>
+<h3 id="etapa-910--saída-final">Etapa 9–10 · Saída final</h3>
+<p>Os textos abaixo são a <strong>saída final do sistema para esta
+notícia</strong>, com a formatação do <a
+href="design.html"><code>design.md</code></a>. As URLs são ilustrativas
+(não publicadas).</p>
+<h4 id="a-blog">a) Blog</h4>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Campo</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Editoria</td>
+<td>Economia (Mundo como secundária)</td>
+</tr>
+<tr class="even">
+<td><strong>Título (H1)</strong></td>
+<td>Economia da China cresce 4,5% no 3º trimestre, puxada por
+exportações ligadas à inteligência artificial (103 caracteres)</td>
+</tr>
+<tr class="odd">
+<td>Título SEO (≤ 60)</td>
+<td>PIB da China cresce 4,5% no 3º trimestre de 2026</td>
+</tr>
+<tr class="even">
+<td>Linha fina</td>
+<td>Resultado fica no piso da meta oficial de Pequim, enquanto a queda
+de mais de 20% no investimento imobiliário continua pesando sobre o
+consumo.</td>
+</tr>
+<tr class="odd">
+<td>Slug</td>
+<td><code>china-cresce-45-terceiro-trimestre-exportacoes-ia</code></td>
+</tr>
+<tr class="even">
+<td>Meta description</td>
+<td>PIB da China avança 4,5% no 3º trimestre de 2026, no piso da meta de
+Pequim, com exportações ligadas à IA; investimento em imóveis cai mais
+de 20%.</td>
+</tr>
+<tr class="odd">
+<td>Palavra-chave</td>
+<td>PIB da China</td>
+</tr>
+<tr class="even">
+<td>Tags</td>
+<td>China, PIB, exportações, inteligência artificial, economia</td>
+</tr>
+<tr class="odd">
+<td>Capa</td>
+<td>Infográfico próprio da redação com os dados citados (sem foto de
+terceiros). Legenda: "Arte: Folha Metrópole, com dados do Escritório
+Nacional de Estatísticas da China"</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Corpo:</strong></p>
+<blockquote>
+<p>A economia da China avançou 4,5% no terceiro trimestre de 2026,
+segundo dados oficiais divulgados nesta segunda-feira (19). O ritmo é
+superior ao do trimestre anterior, quando o país havia marcado o menor
+crescimento em três anos, mas ainda fica abaixo dos 5% do início do ano.
+O número está na faixa mais baixa da meta anual de Pequim, de 4,5% a
+5%.</p>
+<h5 id="exportações-de-tecnologia-sustentam-o-resultado">Exportações de
+tecnologia sustentam o resultado</h5>
+<p>O avanço veio principalmente de fora para dentro. A demanda mundial
+por chips e componentes usados na construção de centros de dados de
+inteligência artificial fez as vendas de bens de alta tecnologia
+crescerem 14,3%. A produção de baterias e de robôs industriais subiu
+mais de 29%.</p>
+<p>Com isso, o superávit comercial chinês caminha para superar o recorde
+de US$ 1,2 trilhão registrado em 2025.</p>
+<h5 id="consumo-e-imóveis-seguem-fracos">Consumo e imóveis seguem
+fracos</h5>
+<p>Dentro do país, o quadro é diferente. O investimento em imóveis
+recuou mais de 20% nos nove primeiros meses do ano, na comparação com o
+mesmo período de 2025. O setor enfrenta uma crise de longa duração,
+herança de anos de construção em excesso e de endividamento das
+incorporadoras privadas.</p>
+<p>Salários que pouco crescem e o desemprego elevado entre os jovens
+completam o cenário que mantém as famílias cautelosas.</p>
+<h5 id="o-que-dizem-os-analistas">O que dizem os analistas</h5>
+<p>Para Sheana Yue, pesquisadora da Oxford Economics, a indústria e as
+exportações de alta tecnologia seguram o crescimento, apesar do
+investimento e do gasto das famílias fracos. Ela avalia que não há sinal
+de fim para a crise imobiliária.</p>
+<p>Dave Chia, economista da Moody's Analytics, aponta como risco a
+dependência de um "único motor externo". Segundo ele, os efeitos das
+medidas de apoio direcionadas às empresas ainda não apareceram nos
+números. Em setembro, Pequim anunciou um pacote com juros menores para
+alguns negócios e subsídios a compradores de imóveis.</p>
+<h5 id="pressão-externa">Pressão externa</h5>
+<p>O Escritório Nacional de Estatísticas da China afirmou que a economia
+manteve "desenvolvimento estável sob pressão". Fora do país, porém,
+cresce a reação de Estados Unidos e União Europeia, cujos fabricantes
+têm dificuldade de competir com o volume de produtos chineses baratos.
+Também há dúvidas sobre se os bilhões investidos em infraestrutura de IA
+vão gerar o retorno prometido.</p>
+<p><strong>Fonte:</strong> BBC News (reportagem de Osmond Chia,
+19/10/2026), com dados do Escritório Nacional de Estatísticas da China.
+Texto reescrito pela redação da Folha Metrópole com apoio de
+inteligência artificial e revisado por editor.</p>
+</blockquote>
+<p><em>(O banner do Mercado Livre entra automaticamente depois do 2º
+parágrafo.)</em></p>
+<h4 id="b-post-instagram-versões-facebook-e-x-ao-lado">b) Post
+(Instagram; versões Facebook e X ao lado)</h4>
+<p><strong>Instagram, legenda (cartão de capa + 3 cards de texto, 1080 ×
+1350):</strong></p>
+<pre><code>Economia da China cresce 4,5% no 3º trimestre, puxada por exportações ligadas à IA
+
+O ritmo supera o do trimestre anterior, o menor em três anos, mas fica no piso da meta de Pequim (4,5% a 5%).
+
+O que pesou:
+• Vendas de bens de alta tecnologia: +14,3%
+• Produção de baterias e de robôs industriais: mais de 29%
+• Investimento imobiliário: queda de mais de 20% em nove meses
+
+Analistas alertam para a dependência de um &quot;único motor externo&quot;: as exportações.
+
+Fonte: BBC News, com dados do Escritório Nacional de Estatísticas da China. Texto produzido com apoio de IA e revisado pela redação.
+
+Leia a matéria completa: link na bio.
+
+#China #Economia #ComércioExterior #InteligênciaArtificial #FolhaMetrópole</code></pre>
+<p><strong>X (≤ 280 caracteres, link incluso):</strong></p>
+<pre><code>Economia da China cresce 4,5% no 3º trimestre, puxada por exportações ligadas à IA. Resultado fica no piso da meta de Pequim; investimento imobiliário cai mais de 20% no ano. Fonte: BBC. https://folhametropole.com/2026/10/china-cresce-45-terceiro-trimestre-exportacoes-ia/</code></pre>
+<p><strong>Facebook:</strong> mesma legenda do Instagram, com o link da
+matéria no corpo no lugar de "link na bio".</p>
+<h4 id="c-push">c) Push</h4>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Campo</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Título (≤ 40)</td>
+<td>China cresce 4,5% no 3º trimestre</td>
+</tr>
+<tr class="even">
+<td>Corpo (≤ 100)</td>
+<td>Exportações de tecnologia ligadas à IA seguram o resultado; imóveis
+seguem em queda.</td>
+</tr>
+<tr class="odd">
+<td>Urgência</td>
+<td>U2, destaque (não é plantão)</td>
+</tr>
+<tr class="even">
+<td>Janela</td>
+<td>dentro de 07h–21h; envio na primeira janela livre depois da
+publicação</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="etapa-11--métricas--descrição">Etapa 11 · Métricas —
+<em>descrição</em></h3>
+<p>Para essa matéria, o sistema acompanharia: leituras e tempo no texto
+(GA4), origem do tráfego (push, Instagram, busca), cliques no link da
+bio, e quanto o editor alterou do rascunho. Os resultados de matérias de
+economia internacional alimentam o peso dessa editoria no filtro da
+etapa 4.</p>
+<hr />
+<h2 id="5-stack-proposta-alternativas-e-custo">5. Stack proposta,
+alternativas e custo</h2>
+<h3 id="51-feito-com-ferramenta-pronta--construído-sob-medida">5.1 Feito
+com ferramenta pronta × construído sob medida</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Componente</th>
+<th>Pronta (usar)</th>
+<th>Construir</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Orquestração dos fluxos</td>
+<td><strong>n8n</strong> (self-hosted) ou cron + worker Python</td>
+<td>A lógica de cada etapa, versionada em git</td>
+</tr>
+<tr class="even">
+<td>Coleta de feeds / extração</td>
+<td><code>feedparser</code>, <code>trafilatura</code>,
+<code>httpx</code></td>
+<td>Adaptadores por veículo (43 fontes: 30 responderam no teste, o resto
+precisa de endereço ou de outro método)</td>
+</tr>
+<tr class="odd">
+<td>Banco</td>
+<td><strong>Postgres + pgvector</strong> (container novo)</td>
+<td>Modelo de dados do pipeline (itens, eventos, fatos, rascunhos,
+revisões)</td>
+</tr>
+<tr class="even">
+<td>Dedup / similaridade</td>
+<td>embeddings por API + <code>pgvector</code></td>
+<td>Regras de limiar e calibração com dados do jornal</td>
+</tr>
+<tr class="odd">
+<td>Triagem, extração, redação</td>
+<td>LLM por API</td>
+<td><strong>Prompts, regras de voz, verificação de fatos e teste de
+cópia</strong>, o coração do produto</td>
+</tr>
+<tr class="even">
+<td>Revisão humana</td>
+<td>Telegram (MVP) / Retool ou Supabase (painel)</td>
+<td>Fila, regras de rota por risco, trilha de auditoria</td>
+</tr>
+<tr class="odd">
+<td>Publicação blog</td>
+<td><strong>WordPress REST</strong> + Rank Math</td>
+<td>Conector com blocos Gutenberg, slot do banner afiliado, upload de
+mídia</td>
+</tr>
+<tr class="even">
+<td>Publicação social</td>
+<td><strong>Instagram Graph API</strong>, Facebook Pages API</td>
+<td>Renderização de cards (HTML → PNG com Playwright) e validação por
+canal</td>
+</tr>
+<tr class="odd">
+<td>Push</td>
+<td>a ferramenta de push que o site já usa</td>
+<td>Integração e regras de horário/urgência</td>
+</tr>
+<tr class="even">
+<td>Métricas</td>
+<td>GA4, Search Console, APIs das redes</td>
+<td>Painel semanal e ligação com o filtro de relevância</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="52-alternativas-relevantes">5.2 Alternativas relevantes</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Decisão</th>
+<th>Opção A (recomendada)</th>
+<th>Opção B</th>
+<th>Quando B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Orquestração</td>
+<td><strong>n8n</strong> no VPS (visual, o Charles ou a equipe conseguem
+entender)</td>
+<td>Worker Python + <code>pm2</code></td>
+<td>Se quiserem mais controle e menos dependência de interface</td>
+</tr>
+<tr class="even">
+<td>LLM</td>
+<td>Modelo forte para redação/verificação + modelo barato para
+triagem</td>
+<td>Um só modelo para tudo</td>
+<td>Só se o volume for baixo (simplicidade &gt; custo)</td>
+</tr>
+<tr class="odd">
+<td>Embeddings</td>
+<td>API (rápido, barato)</td>
+<td>Local no Ollama</td>
+<td>O Ollama do VPS tem um bug de AVX512 já conhecido; por API evita o
+problema</td>
+</tr>
+<tr class="even">
+<td>Revisão</td>
+<td>Telegram no começo</td>
+<td>Painel web</td>
+<td>Quando houver mais de 1 editor e mais de ~15 itens/dia</td>
+</tr>
+<tr class="odd">
+<td>Fontes pagas (WSJ, FT, Bloomberg, Economist, Valor)</td>
+<td>Só título + link, e pauta para humano</td>
+<td>Contratar API/licença</td>
+<td>Se o Charles quiser usá-las como fato-base legalmente</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="53-custo-estimado-por-volume">5.3 Custo estimado por volume</h3>
+<blockquote>
+<p><strong>Estimativa</strong>, sem proposta formal: preços de API
+variam e devem ser revalidados na contratação. Em reais, câmbio de
+referência ~R$ 5,70/US$ (premissa). Infra usa o VPS já existente (custo
+incremental ~0).</p>
+</blockquote>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Item (US$/mês)</th>
+<th>5 notícias/dia (~150/mês)</th>
+<th>15 notícias/dia (~450/mês)</th>
+<th>30 notícias/dia (~900/mês)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Redação + verificação (modelo forte)</td>
+<td>25–60</td>
+<td>75–180</td>
+<td>150–360</td>
+</tr>
+<tr class="even">
+<td>Triagem + extração (modelo barato, ~1,5–3 mil itens/dia lidos de 43
+fontes)</td>
+<td>15–40</td>
+<td>15–40</td>
+<td>15–40</td>
+</tr>
+<tr class="odd">
+<td>Embeddings</td>
+<td>2–6</td>
+<td>2–6</td>
+<td>2–8</td>
+</tr>
+<tr class="even">
+<td>Imagens por IA (só como apoio rotulado)</td>
+<td>0–20</td>
+<td>0–40</td>
+<td>0–60</td>
+</tr>
+<tr class="odd">
+<td>Armazenamento de mídia</td>
+<td>1–5</td>
+<td>3–10</td>
+<td>5–15</td>
+</tr>
+<tr class="even">
+<td><strong>Total</strong></td>
+<td><strong>≈ 45–130</strong> (R$ 260–740)</td>
+<td><strong>≈ 95–275</strong> (R$ 540–1.570)</td>
+<td><strong>≈ 170–480</strong> (R$ 970–2.740)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>O custo que não aparece na tabela é o do editor.</strong>
+Revisar com atenção leva em média alguns minutos por matéria. A 5 por
+dia são cerca de 25–40 min diários; a 30 por dia, 2,5 a 4 horas. O
+gargalo da automação é a revisão, não o custo de IA, e por isso o volume
+deve crescer em degraus, medindo o tempo real do editor.</p>
+<p>Isto revisa <strong>para cima o teto</strong> da estimativa da
+auditoria anterior (US$ 40–100 sem vídeo para 150 matérias), porque
+agora são 43 fontes de leitura, em vez de 17.</p>
+<hr />
+<h2 id="6-roadmap">6. Roadmap</h2>
+<h3 id="roda-já-no-nível-1-texto">Roda já no Nível 1 (texto)</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Fase</th>
+<th>O que entra</th>
+<th>Tempo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>Acessos: Application Password do WordPress, liberação do IP da VPS
+no Cloudflare (Gooweb), token do Instagram, termos de uso por
+veículo</td>
+<td>2–3 dias, depende de terceiros</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Ingestão dos veículos com feed ativo (30 de 43) + banco +
+deduplicação</td>
+<td>~1 semana</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Filtro de relevância + extração + checagem + reescrita + verificação
+de cópia, com <strong>rascunho no WordPress</strong></td>
+<td>~1,5 semana</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Fila de revisão (Telegram) + formatação por canal + posts +
+push</td>
+<td>~1 semana</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>Métricas + painel semanal</td>
+<td>~3–4 dias</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>MVP em ~2 semanas:</strong> 8–10 veículos, 1 editoria
+(Economia/Mundo), blog em rascunho com revisão humana em 100%. Ponto de
+decisão do Charles para ampliar fontes e liberar publicação direta nas
+editorias de baixo risco.</p>
+<h3 id="gancho-do-nível-2-vídeo">Gancho do Nível 2 (vídeo)</h3>
+<p>Depois da aprovação na etapa 8, a matéria aprovada pode alimentar um
+roteiro curto para vídeo (marcado no diagrama). <strong>Nada do Nível 2
+está incluído, orçado ou prometido aqui.</strong> Só foi garantido que a
+arquitetura já guarda o que um vídeo precisaria: texto aprovado, lista
+de fatos com fonte e artes aprovadas.</p>
+<hr />
+<h2 id="7-decisões-que-precisam-do-charles">7. Decisões que precisam do
+Charles</h2>
+<ol type="1">
+<li><strong>Política de fontes.</strong> Ratificar o <strong>perfil
+A/B/C</strong> de cada um dos 43 veículos (Apêndice). Em especial: os
+veículos de linha editorial declarada (C) podem ser usados só como
+pauta/posição atribuída?</li>
+<li><strong>Licenciamento.</strong> Autoriza o advogado a validar os
+termos de uso dos veículos e a lei de direitos autorais (seção 3.4)?
+Quer contratar licença de alguma agência (AP, Reuters, Bloomberg) para
+usar como fato-base?</li>
+<li><strong>Paywall.</strong> Confirma que veículos pagos (WSJ, FT,
+Bloomberg, Economist, Valor etc.) entram só como título + link + pauta
+para humano, sem contornar o acesso?</li>
+<li><strong>Selo de IA.</strong> Aprova o texto "produzido com apoio de
+inteligência artificial e revisado pela redação" em todas as matérias, e
+o modelo de bloco de fonte?</li>
+<li><strong>Quem revisa.</strong> Quem é o editor responsável, em que
+horários, e qual o prazo máximo de aprovação? Sem editor definido, o
+sistema não publica.</li>
+<li><strong>Autopublicação.</strong> Em quais editorias, depois de
+quantas semanas e com que nota mínima, o sistema pode publicar direto?
+(Proposta: só após 4 semanas e só em baixo risco; Política, Justiça,
+Polícia, Saúde e menções ao Charles sempre com humano.)</li>
+<li><strong>Conflito de interesse.</strong> Passar a lista de empresas e
+projetos do Charles que exigem nota de divulgação.</li>
+<li><strong>Capa e imagens.</strong> Autoriza capa em infográfico/arte
+própria quando não houver foto livre? Há banco de imagens
+licenciado?</li>
+<li><strong>Acessos técnicos.</strong> Pedir ao Gooweb: usuário e
+Application Password do WordPress, liberação do IP da VPS na Cloudflare;
+e passar o token da conta Business do Instagram.</li>
+<li><strong>Push.</strong> Qual ferramenta de push o site usa e quem
+controla? Confirmar a regra de horário (07h–21h) e o limite diário.</li>
+<li><strong>Eleições.</strong> Como tratar conteúdo político durante o
+ciclo eleitoral (humano obrigatório, tom, pesquisas)?</li>
+<li><strong>Vídeo (Nível 2).</strong> Seguir com o planejamento depois
+que o Nível 1 estiver estável?</li>
+</ol>
+<hr />
+<h2 id="apêndice--viabilidade-dos-43-veículos-testada-ao-vivo">Apêndice
+— Viabilidade dos 43 veículos (testada ao vivo)</h2>
+<p>Teste feito em 19/10/2026 a partir do VPS, com um endereço de feed
+por veículo (um ou dois endereços conhecidos). <strong>"Não respondeu"
+não quer dizer que o veículo não tenha feed</strong>, quer dizer que os
+endereços testados falharam ou bloquearam o acesso; esses precisam de um
+segundo método (sitemap de notícias, página de seção, ou API/licença). A
+coluna "Perfil" é uma <strong>proposta</strong> para o Charles
+ratificar: <strong>A</strong> agência/dado primário, <strong>B</strong>
+jornalismo generalista ou econômico de referência, <strong>C</strong>
+linha editorial declarada (usar como pauta e posição atribuída).</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Região</th>
+<th>Veículo</th>
+<th>Perfil proposto</th>
+<th>RSS no teste (19/10/2026)</th>
+<th>Itens no feed</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Brasil</td>
+<td>BandNews</td>
+<td>B</td>
+<td>não respondeu (HTTP 404)</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>Brasil</td>
+<td>Brasil Paralelo</td>
+<td>C</td>
+<td>não respondeu (HTTP 308)</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td>Brasil</td>
+<td>CNN Brasil</td>
+<td>B</td>
+<td>responde</td>
+<td>42</td>
+</tr>
+<tr class="even">
+<td>Brasil</td>
+<td>Conexão Política</td>
+<td>C</td>
+<td>responde</td>
+<td>20</td>
+</tr>
+<tr class="odd">
+<td>Brasil</td>
+<td>Correio Braziliense</td>
+<td>B</td>
+<td>responde</td>
+<td>20</td>
+</tr>
+<tr class="even">
+<td>Brasil</td>
+<td>Diario de Pernambuco</td>
+<td>B</td>
+<td>não respondeu (HTTP 403)</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td>Brasil</td>
+<td>Estadão</td>
+<td>B</td>
+<td>responde</td>
+<td>53</td>
+</tr>
+<tr class="even">
+<td>Brasil</td>
+<td>Folha de S.Paulo</td>
+<td>B</td>
+<td>responde</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>Brasil</td>
+<td>G1</td>
+<td>B</td>
+<td>responde</td>
+<td>99</td>
+</tr>
+<tr class="even">
+<td>Brasil</td>
+<td>Gazeta do Povo</td>
+<td>B</td>
+<td>não respondeu (HTTP 403)</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td>Brasil</td>
+<td>JC (PE)</td>
+<td>B</td>
+<td>não respondeu (HTTP 404)</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>Brasil</td>
+<td>Jovem Pan</td>
+<td>B</td>
+<td>responde</td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<td>Brasil</td>
+<td>Metrópoles</td>
+<td>B</td>
+<td>responde</td>
+<td>20</td>
+</tr>
+<tr class="even">
+<td>Brasil</td>
+<td>O Antagonista</td>
+<td>C</td>
+<td>responde</td>
+<td>15</td>
+</tr>
+<tr class="odd">
+<td>Brasil</td>
+<td>O Globo</td>
+<td>B</td>
+<td>não respondeu</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>Brasil</td>
+<td>Pleno.News</td>
+<td>C</td>
+<td>responde</td>
+<td>30</td>
+</tr>
+<tr class="odd">
+<td>Brasil</td>
+<td>Poder360</td>
+<td>B</td>
+<td>responde</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>Brasil</td>
+<td>LeoDias</td>
+<td>B</td>
+<td>responde</td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<td>Brasil</td>
+<td>R7</td>
+<td>B</td>
+<td>responde</td>
+<td>100</td>
+</tr>
+<tr class="even">
+<td>Brasil</td>
+<td>Crusoé</td>
+<td>C</td>
+<td>responde</td>
+<td>15</td>
+</tr>
+<tr class="odd">
+<td>Brasil</td>
+<td>Revista Oeste</td>
+<td>C</td>
+<td>responde</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>Brasil</td>
+<td>SBT News</td>
+<td>B</td>
+<td>não respondeu (HTTP 404)</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td>Brasil</td>
+<td>Epoch Times BR</td>
+<td>C</td>
+<td>não respondeu</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>Brasil</td>
+<td>Valor</td>
+<td>B</td>
+<td>responde</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>EUA</td>
+<td>AP</td>
+<td>A</td>
+<td>não respondeu (HTTP 403)</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>EUA</td>
+<td>Axios</td>
+<td>B</td>
+<td>responde</td>
+<td>36</td>
+</tr>
+<tr class="odd">
+<td>EUA</td>
+<td>Bloomberg</td>
+<td>A</td>
+<td>responde</td>
+<td>20</td>
+</tr>
+<tr class="even">
+<td>EUA</td>
+<td>National Review</td>
+<td>C</td>
+<td>responde</td>
+<td>20</td>
+</tr>
+<tr class="odd">
+<td>EUA</td>
+<td>NY Post</td>
+<td>B</td>
+<td>responde</td>
+<td>23</td>
+</tr>
+<tr class="even">
+<td>EUA</td>
+<td>Reuters</td>
+<td>A</td>
+<td>não respondeu</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td>EUA</td>
+<td>The Hill</td>
+<td>B</td>
+<td>responde</td>
+<td>100</td>
+</tr>
+<tr class="even">
+<td>EUA</td>
+<td>WSJ</td>
+<td>B</td>
+<td>responde</td>
+<td>72</td>
+</tr>
+<tr class="odd">
+<td>EUA</td>
+<td>Wash. Examiner</td>
+<td>C</td>
+<td>responde</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>Europa</td>
+<td>ABC (ES)</td>
+<td>B</td>
+<td>responde</td>
+<td>25</td>
+</tr>
+<tr class="odd">
+<td>Europa</td>
+<td>BBC</td>
+<td>B</td>
+<td>responde</td>
+<td>29</td>
+</tr>
+<tr class="even">
+<td>Europa</td>
+<td>Corriere</td>
+<td>B</td>
+<td>não respondeu</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td>Europa</td>
+<td>Die Welt</td>
+<td>B</td>
+<td>responde</td>
+<td>30</td>
+</tr>
+<tr class="even">
+<td>Europa</td>
+<td>Euronews</td>
+<td>B</td>
+<td>responde</td>
+<td>50</td>
+</tr>
+<tr class="odd">
+<td>Europa</td>
+<td>FT</td>
+<td>B</td>
+<td>responde</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>Europa</td>
+<td>Le Figaro</td>
+<td>B</td>
+<td>não respondeu (HTTP 403)</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td>Europa</td>
+<td>NZZ</td>
+<td>B</td>
+<td>responde</td>
+<td>16</td>
+</tr>
+<tr class="even">
+<td>Europa</td>
+<td>Telegraph</td>
+<td>B</td>
+<td>não respondeu (HTTP 402)</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td>Europa</td>
+<td>Economist</td>
+<td>B</td>
+<td>responde</td>
+<td>300</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Resumo:</strong> 30 de 43 responderam (~1.400 itens numa
+única coleta). Os 13 que não responderam: precisam de investigação
+individual na Fase 1. Nenhum bloqueio foi contornado; o objetivo do
+teste era só medir o que é acessível de forma aberta.</p>
+<footer>Folha Metrópole · documento preparado pela Expoente · 19/10/2026 · <a href="arquitetura.md">markdown</a> · <a href="design.html">design.md</a> · <a href="../">auditoria</a></footer></div>
+<script src="mermaid.min.js"></script><script>if(window.mermaid){mermaid.initialize({startOnLoad:true,theme:"base",securityLevel:"loose",flowchart:{htmlLabels:true,curve:"basis",useMaxWidth:true},themeVariables:{primaryColor:"#e8eef1",primaryTextColor:"#00334d",primaryBorderColor:"#00334d",lineColor:"#00334d",fontFamily:"Poppins,system-ui,sans-serif"}});}</script></body></html>

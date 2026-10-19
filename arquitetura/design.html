@@ -1,0 +1,744 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Folha Metrópole — design.md de publicação</title><style>:root{--ink:#14110d;--bg:#faf8f4;--muted:#6b6459;--accent:#b0834b;--line:#e4ddd0;--card:#fff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.7 Georgia,'Iowan Old Style',serif}
+.wrap{max-width:860px;margin:0 auto;padding:48px 22px 96px}
+header.top{border-bottom:3px solid var(--accent);padding-bottom:18px;margin-bottom:28px}
+.brand{font:600 12px/1 system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+h1{font:700 2rem/1.2 system-ui,sans-serif;margin:.5em 0 0}
+h2,h3,h4{font-family:system-ui,sans-serif;line-height:1.25;margin:2em 0 .6em}
+h2{font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.3em}h3{font-size:1.2rem;color:var(--accent)}
+nav#TOC{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 22px;margin:0 0 32px;font:15px/1.5 system-ui,sans-serif}
+nav#TOC:before{content:"Índice";font-weight:700;display:block;margin-bottom:6px}
+nav#TOC ul{margin:0;padding-left:18px;list-style:none}nav#TOC>ul{padding-left:0}nav#TOC a{color:var(--ink);text-decoration:none}nav#TOC a:hover{color:var(--accent)}
+blockquote{margin:1.2em 0;padding:.6em 1.2em;border-left:4px solid var(--accent);background:#f3ede2;border-radius:0 8px 8px 0}
+.tw{overflow-x:auto;margin:1.2em 0;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font:15px/1.5 system-ui,sans-serif}
+th{background:var(--ink);color:#fff;text-align:left}th,td{padding:9px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:nth-child(even) td{background:#fbf9f5}
+code{font:.88em ui-monospace,monospace;background:#efe9dc;padding:.1em .35em;border-radius:4px}
+pre{background:var(--ink);color:#f3ede2;padding:16px;border-radius:10px;overflow-x:auto;font-size:14px;line-height:1.5}pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:2em 0}a{color:#8a5f2a}
+footer{margin-top:56px;color:var(--muted);font:13px system-ui,sans-serif;border-top:1px solid var(--line);padding-top:14px}
+@media(max-width:600px){body{font-size:16px}h1{font-size:1.55rem}.wrap{padding:28px 16px}}
+@media print{nav#TOC{display:none}body{background:#fff}}
+.wrap{max-width:980px}
+pre.mermaid{background:#fff;color:#14110d;border:1px solid var(--line);padding:16px;overflow-x:auto;text-align:center}
+.tw table{min-width:560px}
+nav#TOC ul ul{padding-left:18px}
+</style></head><body><div class="wrap"><header class="top"><div class="brand">Expoente · Marketing</div><h1>Folha Metrópole — design.md de publicação</h1><p style="margin:.4em 0 0;color:var(--muted);font:14px system-ui,sans-serif">Modelo de formatação para blog, post e push · uso humano e agente de IA</p></header>
+<nav id="TOC"><ul>
+<li><a href="#folha-metrópole--designmd-de-publicação"
+id="toc-folha-metrópole--designmd-de-publicação">Folha Metrópole —
+design.md de publicação</a>
+<ul>
+<li><a href="#0-como-usar" id="toc-0-como-usar">0. Como usar</a></li>
+<li><a href="#1-voz-editorial" id="toc-1-voz-editorial">1. Voz
+editorial</a></li>
+<li><a href="#2-tokens-visuais" id="toc-2-tokens-visuais">2. Tokens
+visuais</a></li>
+<li><a href="#3-template-do-post-nível-1"
+id="toc-3-template-do-post-nível-1">3. Template do POST (Nível
+1)</a></li>
+<li><a href="#4-template-do-blog" id="toc-4-template-do-blog">4.
+Template do BLOG</a></li>
+<li><a href="#5-template-do-push--notificação"
+id="toc-5-template-do-push--notificação">5. Template do PUSH /
+notificação</a></li>
+<li><a
+href="#6-bloco-de-fonte-e-crédito-obrigatório-em-todo-blog-versão-curta-em-todo-post"
+id="toc-6-bloco-de-fonte-e-crédito-obrigatório-em-todo-blog-versão-curta-em-todo-post">6.
+Bloco de fonte e crédito (obrigatório em todo blog; versão curta em todo
+post)</a></li>
+<li><a href="#7-checklist-de-validação-humano-ou-agente"
+id="toc-7-checklist-de-validação-humano-ou-agente">7. Checklist de
+validação (humano ou agente)</a></li>
+<li><a href="#8-exemplos-preenchidos" id="toc-8-exemplos-preenchidos">8.
+Exemplos preenchidos</a></li>
+<li><a href="#9-origem-e-pendências-deste-arquivo"
+id="toc-9-origem-e-pendências-deste-arquivo">9. Origem e pendências
+deste arquivo</a></li>
+</ul></li>
+</ul></nav>
+
+<p>Modelo reutilizável de formatação. Serve a quem escreve e a um agente
+de IA que recebe este arquivo como instrução. Tudo o que está em
+<strong>REGRA</strong> é verificável por código ou por revisão; o que
+está em <strong>GUIA</strong> é critério editorial.</p>
+<h2 id="0-como-usar">0. Como usar</h2>
+<p><strong>Humano.</strong> Escolha o canal (blog, post, push), copie o
+template, preencha os campos, rode o checklist da seção 7.</p>
+<p><strong>Agente de IA.</strong> Receba (a) a lista de fatos aprovados
+com fonte e (b) este arquivo. Produza <strong>somente</strong> os campos
+pedidos em cada template, em JSON, na ordem em que aparecem. Se faltar
+fato para preencher um campo, deixe <code>null</code> e explique em
+<code>pendencias</code>. Nunca invente número, nome, cargo, data nem
+citação.</p>
+<h3 id="regras-absolutas-valem-para-todos-os-canais">Regras absolutas
+(valem para todos os canais)</h3>
+<ol type="1">
+<li><strong>Fatos, nunca texto de terceiros.</strong> Escrever a partir
+da lista de fatos, não de parágrafos do veículo de origem. Citação curta
+só entre aspas e com autor.</li>
+<li><strong>Fonte sempre presente.</strong> Toda peça tem o bloco de
+fonte (seção 6). Sem fonte registrada, não publica.</li>
+<li><strong>Selo de IA sempre presente</strong> quando houve apoio de
+IA: <em>"Texto produzido com apoio de inteligência artificial e revisado
+pela redação."</em></li>
+<li><strong>Neutro e factual.</strong> Sem adjetivo de opinião, sem
+ironia, sem juízo sobre pessoas. Opinião só em coluna assinada, e coluna
+fica fora da automação.</li>
+<li><strong>Humano aprova antes de publicar.</strong> O agente nunca
+dispara publicação.</li>
+<li><strong>Nunca reutilizar foto, gráfico ou vídeo de outro
+veículo.</strong></li>
+<li><strong>Nada de emoji em título, linha fina e push.</strong> Nos
+posts, só se o editor escolher, e no máximo um.</li>
+</ol>
+<h2 id="1-voz-editorial">1. Voz editorial</h2>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Princípio</th>
+<th>Como se aplica</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Direto</td>
+<td>Sujeito + verbo + dado. Primeira frase já diz o que aconteceu.</td>
+</tr>
+<tr class="even">
+<td>Neutro</td>
+<td>"Imparcial sem militância": relata e atribui, não adjetiva.</td>
+</tr>
+<tr class="odd">
+<td>Atribuído</td>
+<td>Toda afirmação não verificada pelo jornal tem dono: "segundo a BBC",
+"informou o órgão".</td>
+</tr>
+<tr class="even">
+<td>Preciso</td>
+<td>Números com unidade e período ("4,5% no terceiro trimestre"). Data
+relativa com data entre parênteses: "nesta segunda-feira (19)".</td>
+</tr>
+<tr class="odd">
+<td>Sóbrio</td>
+<td>Frases curtas (até ~25 palavras). Parágrafos de 2 a 4 linhas. Voz
+ativa na maior parte.</td>
+</tr>
+<tr class="even">
+<td>Responsável</td>
+<td>Presunção de inocência; sem nome de menor; sem recomendação médica;
+acusação só com "segundo a polícia/denúncia".</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Vocabulário.</strong> Preferir "informou", "disse",
+"segundo", "de acordo com". Evitar: "bomba", "chocante", "polêmica",
+"escândalo", "veja", "você não vai acreditar" e qualquer isca de
+clique.</p>
+<p><strong>Números.</strong> Percentual com vírgula decimal e símbolo
+("4,5%"). Moeda: "US$ 1,2 trilhão", "R$ 3 milhões". Sempre explicar
+sigla na primeira menção ("inteligência artificial (IA)").</p>
+<h2 id="2-tokens-visuais">2. Tokens visuais</h2>
+<blockquote>
+<p>Origem: cores e fonte foram <strong>observadas no site
+folhametropole.com na auditoria</strong> (azul-petróleo, laranja,
+Poppins). Os demais valores são <strong>derivados</strong> para
+completar o sistema. O perfil do Instagram não foi auditado: validar com
+o material atual antes de produzir artes em escala.</p>
+</blockquote>
+<h3 id="cores">Cores</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Token</th>
+<th>Hex</th>
+<th>Uso</th>
+<th>Contraste</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>--fm-petroleo</code></td>
+<td><code>#00334d</code></td>
+<td>Fundo de capas, cabeçalhos, títulos</td>
+<td>base</td>
+</tr>
+<tr class="even">
+<td><code>--fm-laranja</code></td>
+<td><code>#ff9900</code></td>
+<td>Destaques, faixa de editoria, botão</td>
+<td>texto escuro sobre laranja: 6,2:1 (ok)</td>
+</tr>
+<tr class="odd">
+<td><code>--fm-laranja-texto</code></td>
+<td><code>#b35c00</code></td>
+<td>Laranja quando for <strong>texto sobre claro</strong></td>
+<td>4,7:1 sobre branco (ok)</td>
+</tr>
+<tr class="even">
+<td><code>--fm-papel</code></td>
+<td><code>#ffffff</code></td>
+<td>Fundo de leitura</td>
+<td>texto <code>#00334d</code> sobre branco: 13,3:1</td>
+</tr>
+<tr class="odd">
+<td><code>--fm-fundo</code></td>
+<td><code>#f4f6f7</code></td>
+<td>Cartões, blocos de fonte</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>--fm-tinta</code></td>
+<td><code>#1a2a33</code></td>
+<td>Texto de corpo</td>
+<td>13,6:1 sobre <code>#f4f6f7</code></td>
+</tr>
+<tr class="odd">
+<td><code>--fm-cinza</code></td>
+<td><code>#5b6b75</code></td>
+<td>Texto secundário, crédito</td>
+<td>5,5:1 sobre branco</td>
+</tr>
+<tr class="even">
+<td><code>--fm-alerta</code></td>
+<td><code>#b91c1c</code></td>
+<td>Plantão, errata</td>
+<td>6,5:1 sobre branco</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>REGRA.</strong> Laranja <code>#ff9900</code>
+<strong>nunca</strong> como cor de texto sobre fundo claro (contraste
+2,1:1, ilegível). Em texto sobre claro, usar
+<code>--fm-laranja-texto</code>.</p>
+<h3 id="tipografia">Tipografia</h3>
+<p>Família única: <strong>Poppins</strong> (títulos, interface e arte
+social). Corpo de leitura longa no blog: a do tema do site (manter), com
+fallback <code>system-ui</code>.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Nível</th>
+<th>Peso</th>
+<th>Tamanho (blog)</th>
+<th>Tamanho (arte 1080 × 1350)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Rótulo da editoria</td>
+<td>600, caixa-alta, espaçamento +0,12em</td>
+<td>12–13 px</td>
+<td>34 px</td>
+</tr>
+<tr class="even">
+<td>Título (H1)</td>
+<td>700</td>
+<td>32–36 px / 1,2</td>
+<td>76–88 px, até 4 linhas</td>
+</tr>
+<tr class="odd">
+<td>Linha fina (H2)</td>
+<td>400</td>
+<td>18–20 px</td>
+<td>40 px</td>
+</tr>
+<tr class="even">
+<td>Intertítulo (H2 do corpo)</td>
+<td>600</td>
+<td>22–24 px</td>
+<td>n/a</td>
+</tr>
+<tr class="odd">
+<td>Corpo</td>
+<td>400</td>
+<td>17–18 px / 1,7</td>
+<td>38–42 px (card de texto)</td>
+</tr>
+<tr class="even">
+<td>Crédito/fonte</td>
+<td>400</td>
+<td>13–14 px, <code>--fm-cinza</code></td>
+<td>28 px</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="hierarquia-na-arte-instagram">Hierarquia na arte
+(Instagram)</h3>
+<ol type="1">
+<li>Faixa laranja com a <strong>editoria</strong> (topo).</li>
+<li><strong>Título</strong> em branco sobre petróleo (ou sobre foto
+escurecida a 60%).</li>
+<li><strong>Selo da fonte</strong> ("Fonte: BBC News") em linha própria
+no rodapé do card, nunca escondido.</li>
+<li>Logo no canto inferior direito. Margens de 80 px.</li>
+<li>Um fato por card de texto, até 35 palavras.</li>
+</ol>
+<h2 id="3-template-do-post-nível-1">3. Template do POST (Nível 1)</h2>
+<p>Canais: Instagram (feed/carrossel), Facebook, X. O conteúdo é o
+mesmo; muda o tamanho.</p>
+<h3 id="31-estrutura-ordem-fixa">3.1 Estrutura (ordem fixa)</h3>
+<ol type="1">
+<li><strong>Headline</strong>: igual ao título do blog ou versão curta
+(até 90 caracteres no Instagram).</li>
+<li><strong>Lide</strong>: 1–2 frases com o fato principal e o dado mais
+forte.</li>
+<li><strong>Corpo</strong>: 2–4 itens curtos (marcadores) com os números
+ou fatos de apoio.</li>
+<li><strong>Atribuição da fonte</strong>: linha própria, <em>"Fonte:
+&lt;veículo&gt;, com dados de &lt;órgão&gt;."</em> + selo de IA.</li>
+<li><strong>CTA</strong>: um só, <em>"Leia a matéria completa: link na
+bio."</em> (Instagram) ou o link (Facebook/X).</li>
+<li><strong>Hashtags</strong>: no fim, 3 a 5.</li>
+</ol>
+<h3 id="32-limites-por-canal-regra">3.2 Limites por canal (REGRA)</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Canal</th>
+<th>Limite duro</th>
+<th>Alvo</th>
+<th>Observação</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Instagram, legenda</td>
+<td>2.200 caracteres</td>
+<td>500–900</td>
+<td>As ~125 primeiras aparecem antes do "mais": headline e lide têm que
+caber aí.</td>
+</tr>
+<tr class="even">
+<td>Instagram, hashtags</td>
+<td>30</td>
+<td>3–5</td>
+<td>No fim da legenda.</td>
+</tr>
+<tr class="odd">
+<td>Instagram, texto da arte</td>
+<td>n/a</td>
+<td>título ≤ 90 caracteres; card ≤ 35 palavras</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Facebook</td>
+<td>~63.000</td>
+<td>300–600</td>
+<td>Link da matéria no corpo.</td>
+</tr>
+<tr class="odd">
+<td>X</td>
+<td>280 (link conta 23)</td>
+<td>até 260 com link</td>
+<td>Sem hashtag se estourar; atribuição "Fonte: X" é obrigatória.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="33-hashtags">3.3 Hashtags</h3>
+<p>Fixa: <code>#FolhaMetrópole</code>. Mais 2 a 4 temáticas (assunto,
+não clichê): <code>#Economia #China #ComércioExterior</code>. Sem
+hashtag de opinião, de político ou de torcida. Com acento, conforme a
+grafia correta.</p>
+<h3 id="34-modelo-para-preencher">3.4 Modelo para preencher</h3>
+<pre><code>{headline}
+
+{lide}
+
+{rotulo_lista}:
+• {fato_1}
+• {fato_2}
+• {fato_3}
+
+{frase_de_contexto_ou_risco, opcional}
+
+Fonte: {veiculo}, com dados de {orgao_primario}. Texto produzido com apoio de IA e revisado pela redação.
+
+Leia a matéria completa: link na bio.
+
+#FolhaMetrópole #{tema1} #{tema2}</code></pre>
+<h2 id="4-template-do-blog">4. Template do BLOG</h2>
+<h3 id="41-estrutura-ordem-fixa">4.1 Estrutura (ordem fixa)</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Elemento</th>
+<th>Regra</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><strong>Rótulo de editoria</strong></td>
+<td>Uma das editorias do jornal (Política, Economia, Mundo, Polícia,
+Educação, Saúde, etc.).</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><strong>Título (H1)</strong></td>
+<td>80–110 caracteres, declarativo, sujeito + verbo + número quando
+houver. Sem ponto final.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><strong>Subtítulo / linha fina (H2)</strong></td>
+<td>1 frase, 100–160 caracteres, traz consequência ou próximo
+passo.</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><strong>Imagem de capa</strong> + crédito</td>
+<td>Linha própria: <code>Foto: &lt;crédito&gt;</code> ou
+<code>Arte: Folha Metrópole</code>.</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td><strong>Lide</strong></td>
+<td>1º parágrafo: quem, o quê, quando, onde. Data relativa: "nesta
+segunda-feira (19)".</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td><strong>Banner afiliado</strong></td>
+<td>Slot do Mercado Livre depois do 2º parágrafo (preservar).</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td><strong>Corpo com intertítulos (H2)</strong></td>
+<td>3 a 6 intertítulos, frases nominais, um a cada 2–3 parágrafos.</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td><strong>Bloco de fonte e crédito</strong></td>
+<td>Obrigatório. Seção 6.</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td><strong>Selo de IA</strong></td>
+<td>Dentro do bloco de fonte.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Tamanho.</strong> Notícia factual: 450–700 palavras.
+Explicativa: até 1.300. Nunca encher texto para bater número.</p>
+<h3 id="42-seo-regra">4.2 SEO (REGRA)</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Campo</th>
+<th>Regra</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Título SEO</strong></td>
+<td>até 60 caracteres, palavra-chave no início, sem caixa-alta</td>
+</tr>
+<tr class="even">
+<td><strong>Meta description</strong></td>
+<td>140–160 caracteres, uma frase completa, com a palavra-chave e o dado
+principal, sem aspas duplas</td>
+</tr>
+<tr class="odd">
+<td><strong>Slug</strong></td>
+<td>minúsculas, sem acento, hífens, até 8 palavras, sem artigos e
+preposições desnecessários, sem data (o WordPress já põe
+<code>/AAAA/MM/</code>)</td>
+</tr>
+<tr class="even">
+<td><strong>Palavra-chave principal</strong></td>
+<td>1 expressão (2–4 palavras), presente no título SEO, na meta
+description, no 1º parágrafo e em 1 intertítulo</td>
+</tr>
+<tr class="odd">
+<td><strong>Palavras-chave secundárias</strong></td>
+<td>2 a 4, viram as tags</td>
+</tr>
+<tr class="even">
+<td><strong>Imagem</strong></td>
+<td>nome do arquivo = slug; <code>alt</code> descritivo (sem "imagem
+de"); legenda com crédito</td>
+</tr>
+<tr class="odd">
+<td><strong>Links</strong></td>
+<td>1 link para o original (no bloco de fonte), 1 a 2 links internos
+para matérias relacionadas</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="43-modelo-para-preencher">4.3 Modelo para preencher</h3>
+<pre><code>editoria: {editoria}
+titulo_h1: {80-110 caracteres}
+linha_fina: {100-160 caracteres}
+titulo_seo: {ate 60}
+meta_description: {140-160}
+slug: {ate 8 palavras}
+palavra_chave: {2-4 palavras}
+tags: [{2-4 tags}]
+capa: {descricao} | credito: {Foto: ... | Arte: Folha Metrópole}
+corpo_md: |
+  {lide}
+
+  {2o paragrafo}
+
+  ## {intertitulo_1}
+  {paragrafos}
+  ## {intertitulo_2}
+  {paragrafos}
+fonte_bloco: (ver seção 6)</code></pre>
+<h2 id="5-template-do-push--notificação">5. Template do PUSH /
+notificação</h2>
+<h3 id="51-estrutura-e-limites-regra">5.1 Estrutura e limites
+(REGRA)</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Campo</th>
+<th>Limite</th>
+<th>Regra</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Título</strong></td>
+<td>até 40 caracteres</td>
+<td>O fato em uma linha; começa pelo sujeito; sem ponto final; sem
+caixa-alta</td>
+</tr>
+<tr class="even">
+<td><strong>Corpo</strong></td>
+<td>até 100 caracteres</td>
+<td>O dado que faz clicar, sem repetir o título; sem isca</td>
+</tr>
+<tr class="odd">
+<td><strong>Rótulo</strong> (opcional)</td>
+<td>até 12 caracteres</td>
+<td>Só em plantão: "PLANTÃO"</td>
+</tr>
+<tr class="even">
+<td><strong>Destino</strong></td>
+<td>URL da matéria</td>
+<td>Sempre a matéria completa, nunca um post de rede social</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="52-urgência-e-horário">5.2 Urgência e horário</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Nível</th>
+<th>Quando</th>
+<th>Quando enviar</th>
+<th>Aprovação</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>U1, plantão</strong></td>
+<td>Fato de grande impacto, confirmado por <strong>2 fontes</strong> (ou
+fonte primária)</td>
+<td>Na hora, <strong>a qualquer horário</strong></td>
+<td>Humano obrigatório, sem exceção</td>
+</tr>
+<tr class="even">
+<td><strong>U2, destaque</strong></td>
+<td>Notícia relevante do dia</td>
+<td>Janela 07h–21h (Brasília), primeira janela livre</td>
+<td>Humano</td>
+</tr>
+<tr class="odd">
+<td><strong>U3, resumo</strong></td>
+<td>Compilado ou utilidade pública</td>
+<td>07h30 e 18h (no máximo 2 resumos/dia)</td>
+<td>Humano na fase inicial</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>REGRAS de horário.</strong></p>
+<ul>
+<li>Fora de 07h–21h, só U1.</li>
+<li>No máximo <strong>3 pushes por dia</strong> na soma de U2 e U3; U1
+não conta no limite, mas cada plantão precisa de justificativa
+escrita.</li>
+<li>Intervalo mínimo de <strong>60 minutos</strong> entre pushes (exceto
+U1).</li>
+<li>Nunca push de matéria em quarentena, sob correção ou em editoria de
+risco sem humano.</li>
+<li>Sem push sobre tragédia com vítimas identificáveis antes de
+confirmação oficial.</li>
+</ul>
+<h3 id="53-modelo-para-preencher">5.3 Modelo para preencher</h3>
+<pre><code>titulo: {ate 40}
+corpo: {ate 100}
+urgencia: U1 | U2 | U3
+agendar_para: {data e hora de Brasília, dentro da janela}
+url: {link da matéria}</code></pre>
+<h2
+id="6-bloco-de-fonte-e-crédito-obrigatório-em-todo-blog-versão-curta-em-todo-post">6.
+Bloco de fonte e crédito (obrigatório em todo blog; versão curta em todo
+post)</h2>
+<p><strong>Blog:</strong></p>
+<pre><code>Fonte: {veiculo} ({reportagem de {autor}, se houver}, {data}), com dados de {orgao_primario}.
+Matéria original: {url}
+Texto reescrito pela redação da Folha Metrópole com apoio de inteligência artificial e revisado por {editor}.</code></pre>
+<p><strong>Post:</strong>
+<code>Fonte: {veiculo}, com dados de {orgao}. Texto produzido com apoio de IA e revisado pela redação.</code></p>
+<p><strong>REGRAS.</strong> O veículo de origem é citado pelo nome, não
+por "imprensa" ou "agências". Se houve mais de um veículo, citar todos
+("BBC News e Wall Street Journal"). Se a informação foi só confirmada
+pelo segundo veículo, ele entra no bloco de fonte mesmo sem ser citado
+no corpo. Quando o veículo for de linha editorial declarada (perfil C),
+o corpo atribui a ele cada afirmação ("segundo a Revista X").</p>
+<h2 id="7-checklist-de-validação-humano-ou-agente">7. Checklist de
+validação (humano ou agente)</h2>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Verificação</th>
+<th>Falhou, então</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Todos os campos do template preenchidos, nenhum <code>null</code>
+sem pendência</td>
+<td>devolver</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Título 80–110 caracteres (blog); push ≤ 40; X ≤ 280 contando link
+como 23; Instagram ≤ 2.200</td>
+<td>encurtar</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Meta description 140–160; título SEO ≤ 60; slug ≤ 8 palavras</td>
+<td>ajustar</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Bloco de fonte presente, com link do original e selo de IA</td>
+<td>bloquear</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Cada número e nome do texto existe na lista de fatos</td>
+<td>bloquear</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Teste de cópia: 8-gramas ≤ 3% e nenhuma sequência literal &gt; 12
+palavras (exceto nomes e termos de dado)</td>
+<td>reescrever</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Sem adjetivo de opinião, sem isca de clique, sem emoji no
+título</td>
+<td>reescrever</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Sem foto, gráfico ou vídeo de terceiros</td>
+<td>bloquear</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Push: dentro da janela de horário e do limite diário</td>
+<td>reagendar</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>Editoria de risco (Polícia, Justiça, Saúde, Política) ou menção a
+empresa do dono: humano marcado como obrigatório</td>
+<td>bloquear</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="8-exemplos-preenchidos">8. Exemplos preenchidos</h2>
+<p>Notícia real usada: <strong>BBC News</strong>, <em>China's growth
+accelerates as AI boom helps boost exports</em>, de Osmond Chia,
+19/10/2026 (<a
+href="https://www.bbc.co.uk/news/articles/cm5yn098xz8lo">https://www.bbc.co.uk/news/articles/cm5yn098xz8lo</a>).
+Confirmação do número de 4,5% pelo título do Wall Street Journal
+(<em>China's Economy Expanded 4.5% in Third Quarter, Powered by
+Exports</em>). As URLs de publicação abaixo são ilustrativas, a matéria
+<strong>não foi publicada</strong>.</p>
+<h3 id="81-post-instagram">8.1 Post, Instagram</h3>
+<pre><code>Economia da China cresce 4,5% no 3º trimestre, puxada por exportações ligadas à IA
+
+O ritmo supera o do trimestre anterior, o menor em três anos, mas fica no piso da meta de Pequim (4,5% a 5%).
+
+O que pesou:
+• Vendas de bens de alta tecnologia: +14,3%
+• Produção de baterias e de robôs industriais: mais de 29%
+• Investimento imobiliário: queda de mais de 20% em nove meses
+
+Analistas alertam para a dependência de um &quot;único motor externo&quot;: as exportações.
+
+Fonte: BBC News, com dados do Escritório Nacional de Estatísticas da China. Texto produzido com apoio de IA e revisado pela redação.
+
+Leia a matéria completa: link na bio.
+
+#FolhaMetrópole #China #Economia #ComércioExterior #InteligênciaArtificial</code></pre>
+<p>Arte (capa 1080 × 1350): faixa laranja "ECONOMIA"; título em branco
+sobre petróleo; selo "Fonte: BBC News"; sem foto de terceiros, com um
+mini-gráfico próprio (4,5% vs. 5% no 1º trimestre).</p>
+<h3 id="82-post-x">8.2 Post, X</h3>
+<pre><code>Economia da China cresce 4,5% no 3º trimestre, puxada por exportações ligadas à IA. Resultado fica no piso da meta de Pequim; investimento imobiliário cai mais de 20% no ano. Fonte: BBC. https://folhametropole.com/2026/10/china-cresce-45-terceiro-trimestre-exportacoes-ia/</code></pre>
+<p>(210 caracteres contando o link como 23.)</p>
+<h3 id="83-blog">8.3 Blog</h3>
+<pre><code>editoria: Economia
+titulo_h1: Economia da China cresce 4,5% no 3º trimestre, puxada por exportações ligadas à inteligência artificial   (103)
+linha_fina: Resultado fica no piso da meta oficial de Pequim, enquanto a queda de mais de 20% no investimento imobiliário continua pesando sobre o consumo.   (143)
+titulo_seo: PIB da China cresce 4,5% no 3º trimestre de 2026   (48)
+meta_description: PIB da China avança 4,5% no 3º trimestre de 2026, no piso da meta de Pequim, com exportações ligadas à IA; investimento em imóveis cai mais de 20%.   (147)
+slug: china-cresce-45-terceiro-trimestre-exportacoes-ia
+palavra_chave: PIB da China
+tags: [China, PIB, exportações, inteligência artificial, economia]
+capa: infográfico próprio com os dados | credito: Arte: Folha Metrópole, com dados do Escritório Nacional de Estatísticas da China</code></pre>
+<p>O corpo completo (417 palavras, quatro intertítulos) está em <a
+href="rascunho.md"><code>exemplo/rascunho.md</code></a> e na
+seção 4 do documento de arquitetura. Trechos que mostram o padrão:</p>
+<ul>
+<li><strong>Lide:</strong> "A economia da China avançou 4,5% no terceiro
+trimestre de 2026, segundo dados oficiais divulgados nesta segunda-feira
+(19)."</li>
+<li><strong>Intertítulos:</strong> <em>Exportações de tecnologia
+sustentam o resultado</em> · <em>Consumo e imóveis seguem fracos</em> ·
+<em>O que dizem os analistas</em> · <em>Pressão externa</em></li>
+<li><strong>Bloco de fonte:</strong></li>
+</ul>
+<pre><code>Fonte: BBC News (reportagem de Osmond Chia, 19/10/2026), com dados do Escritório Nacional de Estatísticas da China.
+Matéria original: https://www.bbc.co.uk/news/articles/cm5yn098xz8lo
+Texto reescrito pela redação da Folha Metrópole com apoio de inteligência artificial e revisado por {editor}.</code></pre>
+<h3 id="84-push">8.4 Push</h3>
+<pre><code>titulo: China cresce 4,5% no 3º trimestre
+corpo: Exportações de tecnologia ligadas à IA seguram o resultado; imóveis seguem em queda.
+urgencia: U2
+agendar_para: 19/10/2026, 18h30 (Brasília)
+url: https://folhametropole.com/2026/10/china-cresce-45-terceiro-trimestre-exportacoes-ia/</code></pre>
+<p>(título 33 caracteres, corpo 84.)</p>
+<h2 id="9-origem-e-pendências-deste-arquivo">9. Origem e pendências
+deste arquivo</h2>
+<ul>
+<li>Produzido pela Expoente para a Folha Metrópole em 19/10/2026. Não
+existia um design.md oficial da Expoente na VPS; este arquivo é o padrão
+de <strong>publicação</strong> da Folha Metrópole e deve ser revisado
+pelo Charles.</li>
+<li>O <strong>Claude Design</strong> (claude.ai/design) não estava
+acessível nesta execução (exige autorização interativa,
+<code>/design-login</code>). Os tokens aqui foram montados por
+observação do site e podem ser importados ao Claude Design depois, para
+gerar os cartões visuais.</li>
+<li>Pendente: auditar o Instagram <code>@folhametropole</code> (login e
+token), confirmar o tema da fonte de leitura do blog e a ferramenta de
+push usada pelo site.</li>
+</ul>
+<footer>Folha Metrópole · documento preparado pela Expoente · 19/10/2026 · <a href="arquitetura.md">markdown</a> · <a href="design.html">design.md</a> · <a href="../">auditoria</a></footer></div>
+<script src="mermaid.min.js"></script><script>if(window.mermaid){mermaid.initialize({startOnLoad:true,theme:"base",securityLevel:"loose",flowchart:{htmlLabels:true,curve:"basis",useMaxWidth:true},themeVariables:{primaryColor:"#e8eef1",primaryTextColor:"#00334d",primaryBorderColor:"#00334d",lineColor:"#00334d",fontFamily:"Poppins,system-ui,sans-serif"}});}</script></body></html>
