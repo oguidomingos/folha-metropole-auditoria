@@ -1,0 +1,667 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Folha Metrópole — Auditoria e Pipeline de Notícias</title><style>:root{--ink:#14110d;--bg:#faf8f4;--muted:#6b6459;--accent:#b0834b;--line:#e4ddd0;--card:#fff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.7 Georgia,'Iowan Old Style',serif}
+.wrap{max-width:860px;margin:0 auto;padding:48px 22px 96px}
+header.top{border-bottom:3px solid var(--accent);padding-bottom:18px;margin-bottom:28px}
+.brand{font:600 12px/1 system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+h1{font:700 2rem/1.2 system-ui,sans-serif;margin:.5em 0 0}
+h2,h3,h4{font-family:system-ui,sans-serif;line-height:1.25;margin:2em 0 .6em}
+h2{font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.3em}h3{font-size:1.2rem;color:var(--accent)}
+nav#TOC{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 22px;margin:0 0 32px;font:15px/1.5 system-ui,sans-serif}
+nav#TOC:before{content:"Índice";font-weight:700;display:block;margin-bottom:6px}
+nav#TOC ul{margin:0;padding-left:18px;list-style:none}nav#TOC>ul{padding-left:0}nav#TOC a{color:var(--ink);text-decoration:none}nav#TOC a:hover{color:var(--accent)}
+blockquote{margin:1.2em 0;padding:.6em 1.2em;border-left:4px solid var(--accent);background:#f3ede2;border-radius:0 8px 8px 0}
+.tw{overflow-x:auto;margin:1.2em 0;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font:15px/1.5 system-ui,sans-serif}
+th{background:var(--ink);color:#fff;text-align:left}th,td{padding:9px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:nth-child(even) td{background:#fbf9f5}
+code{font:.88em ui-monospace,monospace;background:#efe9dc;padding:.1em .35em;border-radius:4px}
+pre{background:var(--ink);color:#f3ede2;padding:16px;border-radius:10px;overflow-x:auto;font-size:14px;line-height:1.5}pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:2em 0}a{color:#8a5f2a}
+footer{margin-top:56px;color:var(--muted);font:13px system-ui,sans-serif;border-top:1px solid var(--line);padding-top:14px}
+@media(max-width:600px){body{font-size:16px}h1{font-size:1.55rem}.wrap{padding:28px 16px}}
+@media print{nav#TOC{display:none}body{background:#fff}}</style></head><body><div class="wrap"><header class="top"><div class="brand">Expoente · Marketing</div><h1>Folha Metrópole — Auditoria e Pipeline de Notícias</h1></header><nav id="TOC" role="doc-toc"><ul>
+<li><a href="#parte-1--auditoria" id="toc-parte-1--auditoria">PARTE 1 —
+AUDITORIA</a>
+<ul>
+<li><a href="#11-tecnologia--cms" id="toc-11-tecnologia--cms">1.1
+Tecnologia / CMS</a></li>
+<li><a href="#12-editorias-menu-últimas"
+id="toc-12-editorias-menu-últimas">1.2 Editorias (menu
+"Últimas")</a></li>
+<li><a href="#13-frequência--ritmo" id="toc-13-frequência--ritmo">1.3
+Frequência / ritmo</a></li>
+<li><a href="#14-perfil-editorial" id="toc-14-perfil-editorial">1.4
+Perfil editorial</a></li>
+<li><a href="#15-imagens" id="toc-15-imagens">1.5 Imagens</a></li>
+<li><a href="#16-instagram-folhametropole--não-auditado"
+id="toc-16-instagram-folhametropole--não-auditado">1.6 Instagram
+<code>@folhametropole</code> — <strong>não auditado</strong></a></li>
+</ul></li>
+<li><a href="#parte-2--pipeline-de-automação"
+id="toc-parte-2--pipeline-de-automação">PARTE 2 — PIPELINE DE
+AUTOMAÇÃO</a>
+<ul>
+<li><a href="#visão-geral" id="toc-visão-geral">Visão geral</a></li>
+<li><a
+href="#1-fontes-1220--prioridade-a-conteúdo-reutilizável-com-crédito"
+id="toc-1-fontes-1220--prioridade-a-conteúdo-reutilizável-com-crédito">1.
+Fontes (12–20) — prioridade a conteúdo reutilizável com crédito</a></li>
+<li><a href="#2-ingestão" id="toc-2-ingestão">2. Ingestão</a></li>
+<li><a href="#3-banco-de-dados-postgres-supabase-opcional"
+id="toc-3-banco-de-dados-postgres-supabase-opcional">3. Banco de dados
+(Postgres; Supabase opcional)</a></li>
+<li><a href="#4-agente-gerador" id="toc-4-agente-gerador">4. Agente
+gerador</a></li>
+<li><a href="#5-três-entregas" id="toc-5-três-entregas">5. Três
+entregas</a></li>
+<li><a href="#6-revisão-humana" id="toc-6-revisão-humana">6. Revisão
+humana</a></li>
+<li><a href="#7-esforço-stack-e-custos"
+id="toc-7-esforço-stack-e-custos">7. Esforço, stack e custos</a></li>
+<li><a href="#riscos-e-decisões-pendentes"
+id="toc-riscos-e-decisões-pendentes">Riscos e decisões
+pendentes</a></li>
+<li><a href="#próximos-passos-sugeridos"
+id="toc-próximos-passos-sugeridos">Próximos passos sugeridos</a></li>
+</ul></li>
+</ul></nav><p>Cliente: Charles Lidberg (WhatsApp 5561982122221).
+Assessoria: Expoente. Data da auditoria: 19/10/2026. Demanda:
+automatizar criação de notícias (blog + Instagram foto/carrossel; vídeo
+= a confirmar).</p>
+<blockquote>
+<p><strong>Limites da auditoria (honestidade metodológica).</strong> O
+site está atrás de Cloudflare ("Just a moment…" /
+<code>cf-mitigated: challenge</code>) e bloqueou curl, Playwright e
+Chrome headed com IP de datacenter. A leitura foi feita via leitor
+externo (r.jina.ai) e Wayback Machine, que renderizaram home, matérias,
+categorias, sitemap, /sobre e /colunistas (snapshots de jun–set/2026).
+<strong>Não consegui:</strong> <code>/wp-json/wp/v2/posts</code> (403
+"security policy"), <code>/feed/</code> (404), <code>robots.txt</code>,
+nem o Instagram (login wall; IP bloqueado). Itens marcados
+<strong>[verificar]</strong> dependem do acesso do Charles/admin.</p>
+</blockquote>
+<hr />
+<h2 id="parte-1--auditoria">PARTE 1 — AUDITORIA</h2>
+<h3 id="11-tecnologia--cms">1.1 Tecnologia / CMS</h3>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Item</th>
+<th>Achado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>CMS</td>
+<td><strong>WordPress</strong> (<code>/wp-content</code>,
+<code>/wp-json/</code>, oEmbed)</td>
+</tr>
+<tr class="even">
+<td>Tema</td>
+<td><strong>Jannah (TieLabs)</strong> + child theme
+<code>gooweb-child</code> (feito pela agência Gooweb, do Evandro
+Malanquini, que também assina como colunista/webmaster)</td>
+</tr>
+<tr class="odd">
+<td>SEO</td>
+<td><strong>Rank Math</strong> (meta OG, schema, sitemap próprio)</td>
+</tr>
+<tr class="even">
+<td>Sitemap</td>
+<td><code>sitemap_index.xml</code> → <code>post-sitemap1.xml</code> (≈
+menos de 1.000 posts; só 1 arquivo de posts). Funciona.</td>
+</tr>
+<tr class="odd">
+<td>RSS</td>
+<td><code>/feed/</code> retorna 404 (desativado ou bloqueado)
+<strong>[verificar]</strong></td>
+</tr>
+<tr class="even">
+<td>REST API</td>
+<td>Anunciada no <code>&lt;head&gt;</code> (<code>/wp-json/</code>), mas
+<code>/wp-json/wp/v2/posts</code> devolveu 403 para anônimo.
+<strong>Autenticada (Application Password) deve funcionar</strong> — é o
+caminho de publicação <strong>[verificar com o Gooweb se há regra no
+WAF/Cloudflare liberando o IP da VPS]</strong></td>
+</tr>
+<tr class="odd">
+<td>Proteção</td>
+<td>Cloudflare com Managed Challenge. Para publicar por API, pedir ao
+Gooweb: skip-rule no WAF para o IP da VPS ou header secreto.</td>
+</tr>
+<tr class="even">
+<td>Monetização</td>
+<td>Banner afiliado <strong>Mercado Livre</strong> inserido no corpo
+(após o 2º parágrafo) em todas as matérias — <strong>o gerador deve
+preservar o slot</strong></td>
+</tr>
+<tr class="odd">
+<td>Redes</td>
+<td>Instagram <code>@folhametropole</code>, YouTube
+<code>@FolhaMetropole</code>, push (OneSignal-like "Assinar
+notificações")</td>
+</tr>
+<tr class="even">
+<td>Cor/tipografia do site</td>
+<td>Azul-petróleo <code>#00334d</code> + laranja <code>#ff9900</code>,
+fonte <strong>Poppins</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="12-editorias-menu-últimas">1.2 Editorias (menu "Últimas")</h3>
+<p>Política, Economia, Agronegócio, Sports, Entretenimento, Mundo,
+Polícia, Acidente, Benefícios, Cotidiano, Cultura, Descaso, Educação,
+Empregos, Justiça, Opinião, Tecnologia, Saúde, Errata +
+<strong>Regiões</strong> (Centro-Oeste → Mato Grosso → Indiavaí,
+Mirassol d'Oeste, Nossa Sr.ª do Livramento, Nova Xavantina, Santo
+Antônio do Leverger, Sorriso; Poconé aparece em matéria de set/2026) +
+<strong>Colunistas</strong> (Charles L. M. Albuquerque, Evandro
+Malanquini, Christian Barbosa, Juan Costa, Julianne Guimarães, Andréia
+Araújo etc.). URL: <code>/noticias/&lt;editoria&gt;/</code>; matéria:
+<code>/AAAA/MM/&lt;slug&gt;/</code>.</p>
+<p><strong>Volume por editoria:</strong> não mensurável com precisão
+(sem API/feed). Pela home e páginas de categoria: editorias "quentes" =
+Polícia, Economia, Política, Educação, Esportes (Copa 2026),
+Benefícios/Empregos (utilidade pública). Agronegócio e Tecnologia têm
+posts mais espaçados (último em Tec: 29/04/2026). <strong>Ação:</strong>
+puxar contagem real via <code>/wp-json/wp/v2/categories</code> (campo
+<code>count</code>) assim que a API estiver liberada.</p>
+<h3 id="13-frequência--ritmo">1.3 Frequência / ritmo</h3>
+<ul>
+<li>Sitemap (200 URLs mais recentes por lastmod): abr/26: 33 ·
+<strong>mai/26: 112</strong> · jun/26: 39 · jul/26: 1 · set/26: 2
+(últimas: 04/09/2026).</li>
+<li>Em dias ativos (mai–jun/26) saíam <strong>5–10 posts/dia</strong>;
+depois o ritmo <strong>caiu para quase zero</strong> (jul–set). Ou seja:
+o site tem capacidade editorial histórica de ~150/mês e hoje está
+subalimentado — a automação é, na prática, uma <strong>retomada de
+volume</strong>.</li>
+<li>Publicação em lote de manhã (posts de 09h–09h30 BRT observados; um
+post com horário 00:00:25 sugere agendamento) <strong>[verificar
+horários com histórico]</strong>.</li>
+</ul>
+<h3 id="14-perfil-editorial">1.4 Perfil editorial</h3>
+<ul>
+<li><strong>Cobertura:</strong> nacional e internacional (declarado em
+/sobre: "abrangência nacional e internacional"), com <strong>braço
+regional de Mato Grosso</strong> (prefeituras do interior) e Brasília/DF
+(público do Charles). Mix: política federal e STF/Senado, polícia
+(operações no RJ/DF), economia do cotidiano (Banco Central,
+combustíveis, BC valores esquecidos), educação (Enem, MEC),
+benefícios/empregos (6×1, seguro-desemprego), esportes/Copa,
+variedades/famosos (Faustão), agro, e <strong>colunas de
+opinião</strong> longas.</li>
+<li><strong>Tom:</strong> informativo, neutro, "imparcial sem
+militância" (valores do /sobre). Frases curtas, voz passiva moderada,
+sem adjetivação; dados e números no lead. Colunas/opinião têm títulos
+ensaísticos ("O Estado ausente e o preço da omissão"). Linha editorial
+declarada: "objetividade, sem militância ou concessões
+ideológicas".</li>
+<li><strong>Tamanho:</strong> notícia factual ≈ <strong>450–700
+palavras</strong> (Maré: ~640); explicativa/lei ≈
+<strong>900–1.300</strong> (Senado/escravidão: ~1.100 de corpo). Leitura
+exibida "1 minuto de leitura" (contador do tema, não confiável).</li>
+<li><strong>Estrutura padrão (observada em 3 matérias):</strong>
+<ol type="1">
+<li>Rótulo da editoria (acima do título)</li>
+<li><strong>H1 título</strong> — declarativo, 80–110 caracteres, com
+sujeito+verbo+número</li>
+<li><strong>Linha fina (H2)</strong> — 1 frase com consequência/próximo
+passo ("…; proposta segue para sanção presidencial.")</li>
+<li>Autor (gravatar) + data + "Última atualização"</li>
+<li><strong>Imagem de capa</strong> + legenda/crédito em linha própria:
+<code>Foto: Waldemir Barreto</code> / <code>Foto: Reprodução</code> /
+<code>Foto: Divulgação/Prefeitura de Poconé</code></li>
+<li><strong>Lead</strong> (quem/o quê/quando/onde, data relativa "nesta
+terça-feira (9)")</li>
+<li>Banner Mercado Livre após o 2º parágrafo</li>
+<li>Corpo com <strong>intertítulos H2</strong> (4–7 por matéria, frases
+nominais) e parágrafos de 2–4 linhas; <strong>negrito</strong> em
+nomes/cargos em matérias regionais</li>
+<li>1–3 imagens adicionais com crédito; bloco utilitário ("Como
+denunciar")</li>
+<li>Compartilhar (FB, X, WhatsApp…), relacionadas, comentários</li>
+</ol></li>
+<li><strong>Autoria:</strong> Andréia Araújo (maioria das notícias
+factuais), <code>folhametropole</code> (redação), Lucas Silva, César
+Dias, Daniela Duarte, "Dupla Digital" (conta de IA/ferramenta, Instagram
+<code>@dupladigital.ia</code>), colunistas.</li>
+<li><strong>Observação importante:</strong> a matéria de Poconé (set/26)
+cita nominalmente "Charles Lidberg" no ecossistema de consultoria de
+idiomas — <strong>risco de conflito de interesse/transparência
+editorial</strong>; o agente precisa de regra: não pautar/citar empresas
+do próprio dono sem nota de divulgação.</li>
+<li><strong>Já há uso de IA no fluxo:</strong> conta "Dupla Digital IA"
+e a matéria de Poconé diz que "a matéria original, publicada pelo
+portal…" — ou seja, o jornal <strong>já reescreve/contextualiza matérias
+de terceiros</strong> com crédito. O pipeline formaliza isso.</li>
+</ul>
+<h3 id="15-imagens">1.5 Imagens</h3>
+<ul>
+<li><strong>1 capa + 1–3 internas</strong> por matéria. Capa em
+<code>.jpg</code> no padrão
+<code>/wp-content/uploads/AAAA/MM/&lt;slug&gt;.jpg</code>; thumbs
+390×220 (16:9 recorte) geradas pelo tema; og:image padrão do site
+800×500.</li>
+<li><strong>Origem:</strong> Agência Brasil/Senado/Câmara (créditos
+nominais de fotógrafo), "Reprodução" (screenshot/pool),
+"Divulgação/<prefeitura>" (release). Sem fotos próprias aparentes →
+<strong>base legal clara</strong>: usar só imagens de agências públicas
+(CC/gov), release, ou geradas por IA <strong>com selo</strong>.</li>
+<li>Nome do arquivo = slug da matéria (bom para SEO; replicar).</li>
+</ul>
+<h3 id="16-instagram-folhametropole--não-auditado">1.6 Instagram
+<code>@folhametropole</code> — <strong>não auditado</strong></h3>
+<p>Login wall + bloqueio de IP. <strong>Pendências para o
+Charles/Guilherme:</strong> (a) print do perfil e 6 últimos posts, ou
+(b) token Instagram Graph API (Business) — que também serve para
+publicar. Hipótese de trabalho (a confirmar): card único com manchete
+sobre foto, paleta azul-petróleo/laranja do site, Poppins.</p>
+<hr />
+<h2 id="parte-2--pipeline-de-automação">PARTE 2 — PIPELINE DE
+AUTOMAÇÃO</h2>
+<h3 id="visão-geral">Visão geral</h3>
+<pre><code>FONTES → INGESTÃO → POSTGRES (bruto + embeddings) → DEDUPE/CLUSTER → TRIAGEM (score)
+   → AGENTE REDATOR (rewrite original + fact-check) → FILA DE REVISÃO (Charles/editor)
+        ├─► (a) WordPress REST (rascunho/agendado)
+        ├─► (b) Carrossel IG (templates HTML→PNG)
+        └─► (c) Reels (roteiro+voz+vídeo) [a confirmar]</code></pre>
+<p>Orquestração: <strong>n8n</strong> (self-hosted na VPS) ou worker
+Node/Python + pm2; fila no Postgres (<code>pgmq</code>/tabela de jobs).
+Tudo em pm2/docker novos — não mexer nos existentes.</p>
+<h3
+id="1-fontes-1220--prioridade-a-conteúdo-reutilizável-com-crédito">1.
+Fontes (12–20) — prioridade a conteúdo reutilizável com crédito</h3>
+<blockquote>
+<p>URLs conhecidas; <strong>RSS/feasibilidade não testados ao vivo nesta
+sessão</strong> (a VPS só foi validada contra o folhametropole.com).
+Validar com <code>feedparser</code> na etapa de setup.</p>
+</blockquote>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Fonte</th>
+<th>URL</th>
+<th>RSS/API</th>
+<th>Scraping / uso</th>
+<th>Perfil</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Agência Brasil (EBC)</td>
+<td>agenciabrasil.ebc.com.br</td>
+<td>RSS por editoria</td>
+<td>Fácil; <strong>CC BY 3.0 BR</strong> (reuso com crédito)</td>
+<td>geral/nacional</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Agência Senado</td>
+<td>www12.senado.leg.br/noticias</td>
+<td>RSS + dados abertos</td>
+<td>Fácil; reprodução livre com crédito</td>
+<td>política/leis</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Agência Câmara</td>
+<td>camara.leg.br/noticias</td>
+<td>RSS + API dados abertos</td>
+<td>Fácil; reprodução com crédito</td>
+<td>política</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>IBGE Agência de Notícias</td>
+<td>agenciadenoticias.ibge.gov.br</td>
+<td>RSS</td>
+<td>Fácil; dado oficial</td>
+<td>economia/dados</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Banco Central</td>
+<td>bcb.gov.br/detalhenoticia / API Olinda</td>
+<td>API/RSS</td>
+<td>Fácil</td>
+<td>economia</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>STF / STJ / TSE</td>
+<td>portal.stf.jus.br, stj.jus.br, tse.jus.br</td>
+<td>RSS/páginas de notícia</td>
+<td>Fácil</td>
+<td>justiça</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>gov.br (MEC, Saúde, Trabalho, Previdência)</td>
+<td>gov.br/&lt;ministério&gt;/pt-br/assuntos/noticias</td>
+<td>RSS (Plone)</td>
+<td>Fácil</td>
+<td>utilidade pública</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Embrapa / Conab / MAPA</td>
+<td>embrapa.br, conab.gov.br, gov.br/agricultura</td>
+<td>RSS</td>
+<td>Fácil</td>
+<td>agro</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Diário Oficial da União</td>
+<td>in.gov.br</td>
+<td>API/dados abertos (INLABS)</td>
+<td>Médio (parsing)</td>
+<td>atos oficiais</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>Google News (queries por tema/cidade)</td>
+<td>news.google.com/rss/search?q=…&amp;hl=pt-BR</td>
+<td>RSS</td>
+<td>Só como <strong>radar de pautas</strong> (links redirecionam; não
+copiar texto)</td>
+<td>todos</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>Gov. de Mato Grosso + prefeituras (Poconé, Sorriso, Nova
+Xavantina…)</td>
+<td>mt.gov.br, sites municipais</td>
+<td>RSS irregular/HTML</td>
+<td>Médio (cada site é um scraper)</td>
+<td>regional MT</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>Polícia Civil/PM (RJ, DF, MT) e SSP</td>
+<td>pcerj.rj.gov.br, pcdf.df.gov.br, pm.mt.gov.br</td>
+<td>HTML</td>
+<td>Médio</td>
+<td>polícia (release oficial)</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>Assessorias de esporte (CBF, COB, FIFA)</td>
+<td>cbf.com.br, cob.org.br</td>
+<td>HTML</td>
+<td>Médio</td>
+<td>esportes/Copa</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>Agência Brasil/EBC internacional + ONU News PT</td>
+<td>news.un.org/pt</td>
+<td>RSS</td>
+<td>Fácil</td>
+<td>mundo</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td>ANP/ANEEL/ANATEL (agências reguladoras)</td>
+<td>gov.br/anp, aneel, anatel</td>
+<td>RSS</td>
+<td>Fácil</td>
+<td>economia/energia</td>
+</tr>
+<tr class="even">
+<td>16</td>
+<td>Radar social: X/Telegram oficiais de órgãos públicos</td>
+<td>contas oficiais</td>
+<td>API paga/limitada</td>
+<td>Baixa — só como gatilho</td>
+<td>alerta de pauta</td>
+</tr>
+<tr class="odd">
+<td>17</td>
+<td>Portais comerciais (G1, CNN Brasil, Poder360, Metrópoles)</td>
+<td>—</td>
+<td>RSS público</td>
+<td><strong>Somente monitorar pauta (título/link)</strong>; nunca
+reescrever corpo</td>
+<td>benchmark</td>
+</tr>
+</tbody>
+</table></div>
+<p>Regra: fontes 1–9, 11–12, 14–15 = <strong>matéria-prima
+permitida</strong>; 10, 16, 17 = <strong>radar</strong> (gera pauta que
+o agente apura em fonte oficial).</p>
+<h3 id="2-ingestão">2. Ingestão</h3>
+<ul>
+<li><strong>Coletores:</strong> <code>feedparser</code> p/ RSS;
+<code>trafilatura</code> (extração de texto limpo) + <code>httpx</code>;
+<code>Playwright/patchright</code> só para sites com JS; API oficial
+quando existir (Câmara, Senado, BCB, IBGE).</li>
+<li><strong>Frequência:</strong> RSS a cada 10–15 min (cron do n8n);
+sites HTML a cada 30–60 min; DOU 1×/dia 08h; Google News queries a cada
+30 min.</li>
+<li><strong>Detecção de novidade:</strong>
+<code>ETag/Last-Modified</code> + hash do <code>guid/url</code> canônico
+(UTM removido).</li>
+<li><strong>Dedupe em 3 camadas:</strong> (1) URL canônica; (2) hash do
+título normalizado; (3) <strong>embedding cosseno ≥ 0,88</strong> nas
+últimas 72h → mesmo "cluster de evento"; o agente escreve <strong>1
+matéria por cluster</strong> usando todas as fontes do cluster (reduz
+risco de plágio e melhora fact-check).</li>
+<li><strong>Robustez:</strong> robots.txt respeitado, User-Agent
+identificado, rate-limit por domínio, retry com backoff, alerta no
+Telegram se fonte ficar 24h sem item.</li>
+</ul>
+<h3 id="3-banco-de-dados-postgres-supabase-opcional">3. Banco de dados
+(Postgres; Supabase opcional)</h3>
+<p>Recomendo <strong>Postgres 16 + pgvector</strong> dedicado (container
+novo) e mídia em <strong>Cloudflare R2 ou Supabase Storage</strong>;
+Supabase só se quiserem UI/auth prontos para a fila de revisão.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sources(<span class="kw">id</span>, nome, tipo[rss|html|api|radar], url, uso[materia_prima|radar], licenca, intervalo_min, ativo, ultimo_ok)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>raw_items(<span class="kw">id</span>, source_id, url_canonica <span class="kw">UNIQUE</span>, titulo, subtitulo, texto, autor, publicado_em, coletado_em,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>          categoria_origem, idioma, hash_titulo, embedding vector(<span class="dv">1024</span>), status[novo|clusterizado|descartado])</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>raw_media(<span class="kw">id</span>, raw_item_id, url_origem, storage_path, w, h, credito, licenca, tipo[foto|video], hash_phash)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>clusters(<span class="kw">id</span>, tema, categoria_fm, score, criado_em, status[aberto|em_redacao|publicado|descartado])</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>cluster_items(cluster_id, raw_item_id)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>articles(<span class="kw">id</span>, cluster_id, titulo, linha_fina, corpo_html, slug, categoria_fm, tags[], meta_desc, autor_fm,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>         imagem_capa_id, status[rascunho|em_revisao|aprovado|publicado|rejeitado], wp_post_id, modelo, prompt_versao, custo_usd)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>article_claims(<span class="kw">id</span>, article_id, afirmacao, fonte_item_id, verificado bool)   <span class="co">-- rastreio fato→fonte</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>social_assets(<span class="kw">id</span>, article_id, tipo[carrossel|reel|card], arquivos[], legenda, status, ig_media_id)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>reviews(<span class="kw">id</span>, article_id, revisor, decisao, comentario, em)</span></code></pre></div>
+<p>Índices: <code>ivfflat/hnsw</code> em <code>embedding</code>;
+<code>(status, coletado_em)</code>. Retenção do bruto: 90 dias.</p>
+<h3 id="4-agente-gerador">4. Agente gerador</h3>
+<p><strong>Fluxo (LLM em 4 passos):</strong></p>
+<ol type="1">
+<li><strong>Triagem/score</strong> (modelo barato): relevância p/ o
+perfil do FM (editoria, região, utilidade), urgência, risco (crime,
+menores, saúde, eleição) → define se vai para humano obrigatório.</li>
+<li><strong>Extração de fatos:</strong> lista estruturada de afirmações
+(quem, o quê, quando, onde, números, citações) com ID da fonte → grava
+em <code>article_claims</code>.</li>
+<li><strong>Redação</strong> (modelo forte) a partir <strong>dos fatos,
+não do texto-fonte</strong>: prompt de estilo com few-shot de 5–8
+matérias reais do FM por editoria, regras da seção 1.4 (título 80–110
+chars, linha fina, lead 5W, H2 a cada 2–3 parágrafos, 450–900 palavras,
+"nesta terça-feira (9)", sem adjetivo, sem opinião; crédito da fonte no
+texto: "segundo a Agência Senado"). Saída em JSON:
+<code>titulo, linha_fina, corpo_md, slug, tags, meta_desc, imagem_sugerida, legenda</code>.</li>
+<li><strong>Verificação:</strong> (i) outro passe LLM confere cada
+número/nome/data contra <code>claims</code>; (ii) <strong>checagem de
+similaridade</strong> vs. textos-fonte (n-grams 8-gram overlap &lt; 15%
+e cosseno do embedding do parágrafo) — reprova se copiou; (iii) filtros:
+nada de acusação sem "segundo a polícia/denúncia", presunção de
+inocência, sem nome de menor, sem informação médica prescritiva.</li>
+</ol>
+<ul>
+<li><strong>Direito autoral:</strong> só reescrita factual a partir de
+fontes de uso permitido (tabela §1) + crédito; fotos só de agência
+pública/release/IA rotulada; nunca copiar foto de portal comercial.</li>
+<li><strong>Conflito de interesse:</strong> lista de entidades do
+Charles (leadagencybrazil, facipan, mudavida, adapta, agbank etc.) →
+matéria que as cite vai para revisão obrigatória com nota de
+divulgação.</li>
+<li><strong>Colunas/opinião:</strong> fora do escopo automático (autoria
+humana).</li>
+</ul>
+<h3 id="5-três-entregas">5. Três entregas</h3>
+<p><strong>(a) Post de blog — publicação automatizada</strong></p>
+<ul>
+<li><code>POST /wp-json/wp/v2/posts</code> com <strong>Application
+Password</strong> de um usuário "Redação Automática" (role
+Author/Editor), <code>status=draft</code> ou <code>future</code>
+(agendado), <code>categories</code>, <code>tags</code> (criar via
+<code>/tags</code>), <code>excerpt</code>=linha fina, <code>slug</code>,
+meta Rank Math (<code>rank_math_title</code>,
+<code>rank_math_description</code>, <code>rank_math_focus_keyword</code>
+via <code>meta</code>/endpoint do plugin).</li>
+<li>Imagens: upload <code>POST /wp/v2/media</code> (nome=slug),
+<code>alt</code>, <code>caption</code> = "Foto: &lt;crédito&gt;",
+<code>featured_media</code>.</li>
+<li>Corpo em blocos do Gutenberg (H2, parágrafos) com
+<strong>shortcode/bloco do banner Mercado Livre</strong> inserido após o
+2º parágrafo.</li>
+<li>Pré-requisito: Gooweb liberar a REST na Cloudflare para a VPS
+<strong>[bloqueador #1]</strong>. Plano B: XML-RPC
+(<code>/xmlrpc.php</code>) ou plugin leve com endpoint próprio assinado
+por HMAC.</li>
+</ul>
+<p><strong>(b) Carrossel/foto Instagram</strong></p>
+<ul>
+<li><strong>Templates HTML/CSS (Poppins, #00334d/#ff9900, logo do
+FM)</strong> renderizados em PNG por Playwright/<code>satori</code>:
+capa 1080×1350 (4:5) com manchete em até 3 linhas sobre foto escurecida
++ tarja de editoria; 3–6 cards de texto (1 fato por card, ≤ 35
+palavras); card final com CTA "Leia a matéria completa — link na bio" +
+selo de fonte.</li>
+<li>Variante "card único" 1080×1350 para plantão.</li>
+<li>Geração de imagem por IA apenas como fallback de fundo (editoria sem
+foto), sempre rotulada "Ilustração: IA"; nunca para fatos
+reais/crimes/pessoas reais.</li>
+<li>Legenda (≤ 2.200 chars) + hashtags + crédito da foto. Publicação via
+<strong>Instagram Graph API</strong> (<code>/media</code> carousel
+children + <code>/media_publish</code>) — exige conta Business + Page +
+app Meta em modo live <strong>[token a obter]</strong>. Enquanto isso:
+pacote ZIP + legenda na fila para postagem manual.</li>
+</ul>
+<p><strong>(c) Vídeo/Reels — A CONFIRMAR com o Guilherme
+(proposta)</strong></p>
+<ul>
+<li>Roteiro 30–45 s gerado do artigo aprovado (gancho 3 s → 3 fatos →
+fechamento).</li>
+<li>Narração: <strong>ElevenLabs</strong> (voz PT-BR) ou OpenAI TTS
+(mais barato); legendas via Whisper <strong>Groq</strong>
+(alinhamento).</li>
+<li>Montagem: <strong>Remotion</strong> (React → MP4, 1080×1920) com a
+mesma identidade visual: fotos com zoom (Ken Burns), manchete animada,
+legenda queimada, trilha livre; alternativa mais rápida: FFmpeg +
+templates.</li>
+<li>Publicação via Graph API (<code>media_type=REELS</code>).
+Custo/tempo maior; recomendo fase 3 após validar (a) e (b).</li>
+</ul>
+<h3 id="6-revisão-humana">6. Revisão humana</h3>
+<ul>
+<li><strong>Fila de revisão</strong> (tela simples — Next.js/Retool ou
+Supabase UI; MVP: Telegram/WhatsApp com botões ✅ Aprovar / ✏️ Editar /
+❌ Rejeitar + link do preview do rascunho no WP).</li>
+<li>Regras: <strong>100%</strong> das matérias passam por aprovação nas
+primeiras 4 semanas; depois, <strong>autopublicar só</strong> editorias
+de baixo risco (Benefícios, Empregos, Educação, Economia dados oficiais)
+com score ≥ limiar e verificação limpa; <strong>Polícia, Justiça, Saúde,
+Política e qualquer citação ao Charles = sempre humano</strong>.</li>
+<li>O revisor vê: matéria, fatos↔︎fonte lado a lado, relatório de
+similaridade, artes do carrossel; edita no WP; ao aprovar, dispara blog
++ social. Log em <code>reviews</code>. SLA: aprovação em ≤ 30 min em
+horário comercial; plantão desligável.</li>
+</ul>
+<h3 id="7-esforço-stack-e-custos">7. Esforço, stack e custos</h3>
+<p><strong>Stack recomendada:</strong> Postgres+pgvector (Docker, VPS),
+n8n ou worker Python/Node (pm2),
+<code>feedparser</code>/<code>trafilatura</code>/Playwright, LLM:
+<strong>Claude Sonnet</strong> (redação/verificação) + modelo barato
+(Haiku/GLM) para triagem/extração; embeddings
+<code>bge-m3</code>/<code>nomic</code> local no Ollama <em>(atenção: o
+Ollama da VPS tem bug de AVX512 — usar embeddings via API, ex. OpenAI
+<code>text-embedding-3-small</code>, ou aplicar o workaround já
+conhecido)</em>; mídia em R2; WordPress REST; Instagram Graph API;
+Remotion + ElevenLabs (fase 3); revisão via Telegram/painel.</p>
+<div class="tw"><table>
+<thead>
+<tr class="header">
+<th>Fase</th>
+<th>Entrega</th>
+<th>Esforço</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>Acessos (WP app password + liberar Cloudflare, token IG, print do
+IG), validar RSS das fontes</td>
+<td>2–3 dias (dependência do Gooweb/Charles)</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Ingestão + banco + dedupe (10–12 fontes)</td>
+<td>4–6 dias</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Agente redator + verificação + publicação em rascunho no WP</td>
+<td>6–8 dias</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Carrossel/card IG (templates + render + fila)</td>
+<td>4–6 dias</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>Fila de revisão + métricas</td>
+<td>3–4 dias</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>Vídeo/Reels (se confirmado)</td>
+<td>8–12 dias</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Total core (fases 0–4): ~4–5 semanas corridas; com vídeo
+~6–7.</strong> Recomendo MVP em 2 semanas (5 fontes, Agência
+Senado/Brasil/IBGE/gov.br, 1 editoria, blog em rascunho).</p>
+<p><strong>Custo mensal aproximado</strong> (meta: 5 matérias/dia =
+150/mês, cada com 1 carrossel): | Item | Custo/mês (USD) | |---|---| |
+LLM redação+verificação (≈ 8–12k tokens in/3k out por matéria, Sonnet) |
+25–60 | | LLM triagem/extração (~1.000 itens/dia, modelo barato) | 10–25
+| | Embeddings | 1–5 | | Imagens IA (fallback) | 0–20 | | Vídeo (TTS ≈
+60 reels × ~US<span
+class="math inline">0, 3)|15–30||<em>S</em><em>t</em><em>o</em><em>r</em><em>a</em><em>g</em><em>e</em><em>m</em><em>í</em><em>d</em><em>i</em><em>a</em>(<em>R</em>2)|1–5||<em>I</em><em>n</em><em>f</em><em>r</em><em>a</em>(<em>V</em><em>P</em><em>S</em><em>j</em><em>á</em><em>e</em><em>x</em><em>i</em><em>s</em><em>t</em><em>e</em><em>n</em><em>t</em><em>e</em>;<em>b</em><em>a</em><em>n</em><em>c</em><em>o</em>/<em>n</em>8<em>n</em><em>n</em><em>o</em><em>m</em><em>e</em><em>s</em><em>m</em><em>o</em><em>h</em><em>o</em><em>s</em><em>t</em>)| 0<em>i</em><em>n</em><em>c</em><em>r</em><em>e</em><em>m</em><em>e</em><em>n</em><em>t</em><em>a</em><em>l</em>||**<em>T</em><em>o</em><em>t</em><em>a</em><em>l</em>**| *  *  ≈ <em>U</em><em>S</em></span>
+50–140 (≈ R$ 300–800)** sem vídeo ~US$ 40–100 | Para 15 matérias/dia
+(volume de pico histórico do site) multiplicar LLM por ~3.</p>
+<h3 id="riscos-e-decisões-pendentes">Riscos e decisões pendentes</h3>
+<ol type="1">
+<li><strong>Acesso técnico:</strong> Cloudflare bloqueia API/scrapers;
+sem skip-rule do Gooweb a publicação automática não sai.</li>
+<li><strong>Instagram:</strong> falta auditoria do perfil e token Graph
+API (Business).</li>
+<li><strong>Vídeo:</strong> confirmar com o Guilherme se entra no
+escopo.</li>
+<li><strong>Jurídico/editorial:</strong> política de fontes e IA (rótulo
+"produzido com apoio de IA e revisado pela redação"), correções
+(editoria Errata já existe), conflito de interesse do dono.</li>
+<li><strong>Mercado Livre afiliado:</strong> manter slot nas matérias
+geradas.</li>
+<li><strong>Mensurar volume real</strong> por editoria e horários via
+REST/GA4 após liberar acesso.</li>
+</ol>
+<h3 id="próximos-passos-sugeridos">Próximos passos sugeridos</h3>
+<p>(1) Charles pedir ao Gooweb: usuário + Application Password +
+liberação do IP da VPS na Cloudflare; (2) Charles enviar acesso/print do
+Instagram e conectar conta Business ao app Meta; (3) Guilherme decidir
+sobre vídeo; (4) validar RSS das fontes e subir o MVP de
+ingestão.</p><footer>Documento preparado pela Expoente para Charles Lidberg · 19/10/2026</footer></div></body></html>
